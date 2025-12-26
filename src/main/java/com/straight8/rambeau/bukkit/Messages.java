@@ -17,7 +17,7 @@ public class Messages extends MessagesBase {
     }
 
     private void load() {
-        pageHeader = MsgUtil.singleContext("{page}", page -> String.valueOf(page),
+        pageHeader = MsgUtil.singleContext("{page}", String::valueOf,
                 getRawMessage("page-header-format", "PluginVersions ===== page {page} ====="));
         enabledVersion = MsgUtil.tripleContext("{name}", name -> name, "{spacing}", spacing -> spacing, "{version}",
                 version -> version,

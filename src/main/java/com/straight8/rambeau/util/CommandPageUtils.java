@@ -3,13 +3,14 @@ package com.straight8.rambeau.util;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
+import org.jspecify.annotations.NonNull;
 
 public final class CommandPageUtils {
 
     private CommandPageUtils() {
     }
 
-    public static final boolean isInteger(String str) {
+    public static boolean isInteger(String str) {
         try {
             Integer.valueOf(str);
             return true;
@@ -18,7 +19,7 @@ public final class CommandPageUtils {
         }
     }
 
-    public static final List<String> getNextInteger(String argument, int maxPage) {
+    public static @NonNull List<String> getNextInteger(@NonNull String argument, int maxPage) {
         List<String> options = new ArrayList<>();
         int curNr;
         if (argument.isEmpty()) {
@@ -26,7 +27,7 @@ public final class CommandPageUtils {
         } else if (!isInteger(argument)) {
             return options;
         } else {
-            curNr = Integer.valueOf(argument);
+            curNr = Integer.parseInt(argument);
         }
         if (curNr * 10 > maxPage) {
             return options;
@@ -42,7 +43,7 @@ public final class CommandPageUtils {
         return options;
     }
 
-    public static <T> List<T> getPage(List<T> items, int page, int perPage) {
+    public static <T> @NonNull List<T> getPage(@NonNull List<T> items, int page, int perPage) {
         page = page - 1; // 0-starting page
         List<T> list = new ArrayList<>();
         int startItem = page * perPage;
@@ -56,14 +57,14 @@ public final class CommandPageUtils {
         return list;
     }
 
-    public static final String getSpacingFor(String name, int maxLength, boolean isPlayer) {
+    public static @NonNull String getSpacingFor(String name, int maxLength, boolean isPlayer) {
         if (isPlayer) {
             return " ";
         }
         return " ".repeat(maxLength - name.length());
     }
 
-    public static final <T> int getMaxNameLength(Function<T, String> nameGetter, List<T> plugins) {
+    public static <T> int getMaxNameLength(Function<T, String> nameGetter, @NonNull List<T> plugins) {
         List<String> names = new ArrayList<>();
         for (T plugin : plugins) {
             names.add(nameGetter.apply(plugin));
@@ -71,7 +72,7 @@ public final class CommandPageUtils {
         return getMaxNameLength(names);
     }
 
-    public static final int getMaxNameLength(List<String> pluginNames) {
+    public static int getMaxNameLength(@NonNull List<String> pluginNames) {
         int len = 0;
         for (String name : pluginNames) {
             if (name.length() > len) {
@@ -80,5 +81,4 @@ public final class CommandPageUtils {
         }
         return len + 1;
     }
-
 }
