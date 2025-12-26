@@ -18,20 +18,8 @@
             <url>https://repo.papermc.io/repository/maven-public/</url>
         </repository>
         <repository>
-            <id>minecrell</id>
-            <url>https://repo.minecrell.net/snapshots</url>
-        </repository>
-        <repository>
-            <id>CodeMC</id>
-            <url>https://repo.codemc.org/repository/maven-public</url>
-        </repository>
-        <repository>
-            <id>bungeecord-repo</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-        </repository>
-        <repository>
-            <id>velocity</id>
-            <url>https://nexus.velocitypowered.com/repository/maven-public/</url>
+            <id>codemc Public</id>
+            <url>https://repo.codemc.io/repository/maven-public/</url>
         </repository>
         <repository>
             <id>jitpack.io</id>
@@ -60,8 +48,7 @@
         <dependency>
             <groupId>com.github.SlimeDog</groupId>
             <artifactId>SlimeDogCore</artifactId>
-            <version>1.1.0</version>
-            <scope>compile</scope>
+            <version>1.0.10</version>
         </dependency>
     </dependencies>
 
