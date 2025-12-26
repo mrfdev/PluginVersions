@@ -10,10 +10,8 @@ package com.straight8.rambeau.bukkit;
 import com.straight8.rambeau.bukkit.command.PluginVersionsCommand;
 import com.straight8.rambeau.metrics.SpigotMetrics;
 import dev.ratas.slimedogcore.impl.SlimeDogCore;
-import dev.ratas.slimedogcore.impl.utils.UpdateChecker;
 import java.io.File;
 import java.util.Objects;
-import java.util.function.BiConsumer;
 import java.util.logging.Logger;
 import org.bukkit.configuration.file.FileConfiguration;
 
@@ -21,16 +19,12 @@ import org.bukkit.configuration.file.FileConfiguration;
 // Imports for Metrics
 
 public class PluginVersionsBukkit extends SlimeDogCore {
-    private static final int SPIGOT_ID = 5509;
-    private static final String HANGAR_AUTHOR = "SlimeDog";
-    private static final String HANGAR_SLUG = "PluginVersions";
     public final Logger logger = Logger.getLogger("Minecraft");
 
     private Messages messages;
 
     // Configuration values:
     private boolean configurationSendMetrics = true;
-    private boolean checkUpdates = true;
 
     // Fired when plugin is first enabled
     @Override
@@ -47,33 +41,7 @@ public class PluginVersionsBukkit extends SlimeDogCore {
         if (configurationSendMetrics) {
             new SpigotMetrics(this, 5509);
         }
-
-        if (checkUpdates) {
-            String source = getDefaultConfig().getConfig().getString("update-source", "Hangar");
-            BiConsumer<UpdateChecker.VersionResponse, String> consumer = (response, version) -> {
-                switch (response) {
-                    case LATEST:
-                        getLogger().info("Already on latest version");
-                        break;
-                    case FOUND_NEW:
-                        getLogger().info("Found new version: " + version);
-                        break;
-                    case UNAVAILABLE:
-                        getLogger().info("Version information not available");
-                        break;
-                }
-            };
-            UpdateChecker checker;
-            if (source.equalsIgnoreCase("Hangar")) {
-                checker = UpdateChecker.forHangar(this, consumer, HANGAR_AUTHOR, HANGAR_SLUG);
-            } else {
-                checker = UpdateChecker.forSpigot(this, consumer, SPIGOT_ID);
-            }
-            checker.check();
-        }
-
         messages = new Messages(getDefaultConfig());
-
         Objects.requireNonNull(getCommand("pluginversions")).setExecutor(new PluginVersionsCommand(this));
     }
 
@@ -122,10 +90,8 @@ public class PluginVersionsBukkit extends SlimeDogCore {
     public void ReadConfigValuesFromFile() {
         this.reloadConfig();
         FileConfiguration reloadedConfig = getConfig();
-        // Optimized the code to read the configuration options
         configurationSendMetrics = reloadedConfig.getBoolean("enable-metrics", true);
-        checkUpdates = reloadedConfig.getBoolean("check-for-updates", true);
-        if (messages != null) { // ignore first time around
+        if (messages != null) {
             messages.reload();
         }
     }

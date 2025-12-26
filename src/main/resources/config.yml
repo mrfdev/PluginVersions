@@ -11,12 +11,6 @@
 #
 enable-metrics: true
 
-# Check for updates.
-#
-check-for-updates: true
-# Update source may be either Hangar (default) or SpigotMC.
-update-source: Hangar
-
 # When executed at the console,
 # {spacing} will enable tabular output (in-game does not support tabular output).
 # To disable tabular output at the console, replace "{spacing}" with " " in the format strings.

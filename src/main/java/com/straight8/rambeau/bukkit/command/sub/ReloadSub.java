@@ -31,7 +31,6 @@ public class ReloadSub extends AbstractSubCommand {
     public boolean onOptionedCommand(@NonNull SDCRecipient sender, String[] args, SDCCommandOptionSet opts) {
         plugin.CreateConfigFileIfMissing();
         plugin.ReadConfigValuesFromFile();
-        // TODO: Check this has not broken formatting
         Component message = Component.text("Reloaded ").append(Component.text(this.getName() + "/config.yml", NamedTextColor.AQUA));
         String raw = LegacyComponentSerializer.legacySection().serialize(message);
         sender.sendRawMessage(raw);
