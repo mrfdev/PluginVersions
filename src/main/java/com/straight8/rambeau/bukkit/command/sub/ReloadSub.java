@@ -36,5 +36,4 @@ public class ReloadSub extends AbstractSubCommand {
         sender.sendRawMessage(raw);
         return true;
     }
-
 }

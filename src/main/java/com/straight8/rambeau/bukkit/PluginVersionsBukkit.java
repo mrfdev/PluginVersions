@@ -8,12 +8,10 @@
 package com.straight8.rambeau.bukkit;
 
 import com.straight8.rambeau.bukkit.command.PluginVersionsCommand;
-import com.straight8.rambeau.metrics.SpigotMetrics;
 import dev.ratas.slimedogcore.impl.SlimeDogCore;
 import java.io.File;
 import java.util.Objects;
 import java.util.logging.Logger;
-import org.bukkit.configuration.file.FileConfiguration;
 
 // import org.bukkit.Bukkit;
 // Imports for Metrics
@@ -22,9 +20,6 @@ public class PluginVersionsBukkit extends SlimeDogCore {
     public final Logger logger = Logger.getLogger("Minecraft");
 
     private Messages messages;
-
-    // Configuration values:
-    private boolean configurationSendMetrics = true;
 
     // Fired when plugin is first enabled
     @Override
@@ -36,11 +31,6 @@ public class PluginVersionsBukkit extends SlimeDogCore {
 
         // Read the configuration values from config.yml.
         ReadConfigValuesFromFile();
-
-        // Submit plugin usage data to MCStats.org.
-        if (configurationSendMetrics) {
-            new SpigotMetrics(this, 5509);
-        }
         messages = new Messages(getDefaultConfig());
         Objects.requireNonNull(getCommand("pluginversions")).setExecutor(new PluginVersionsCommand(this));
     }
@@ -58,7 +48,6 @@ public class PluginVersionsBukkit extends SlimeDogCore {
     public void CreateConfigFileIfMissing() {
         try {
             String pdfFile = this.getPluginMeta().getDescription();
-
             if (!getDataFolder().exists()) {
                 this.log(pdfFile + ": folder doesn't exist");
                 this.log(pdfFile + ": creating folder");
@@ -71,11 +60,9 @@ public class PluginVersionsBukkit extends SlimeDogCore {
                 }
                 this.log(pdfFile + ": folder created at " + getDataFolder());
             }
-
             File configFile = new File(getDataFolder(), "config.yml");
             if (!configFile.exists()) {
                 this.log(pdfFile + ": config.yml not found, creating!");
-                // Copy config.yml from the jar.
                 try {
                     saveDefaultConfig();
                 } catch (Exception e) {
@@ -89,11 +76,7 @@ public class PluginVersionsBukkit extends SlimeDogCore {
 
     public void ReadConfigValuesFromFile() {
         this.reloadConfig();
-        FileConfiguration reloadedConfig = getConfig();
-        configurationSendMetrics = reloadedConfig.getBoolean("enable-metrics", true);
-        if (messages != null) {
-            messages.reload();
-        }
+        if (messages != null) messages.reload();
     }
 
     public void log(String logString) {
