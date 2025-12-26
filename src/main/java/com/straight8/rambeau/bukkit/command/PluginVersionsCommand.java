@@ -11,5 +11,4 @@ public class PluginVersionsCommand extends BukkitFacingParentCommand {
         addSubCommand(new ListSub(plugin));
         addSubCommand(new ReloadSub(plugin));
     }
-
 }

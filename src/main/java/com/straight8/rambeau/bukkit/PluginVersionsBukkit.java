@@ -12,10 +12,10 @@ import com.straight8.rambeau.metrics.SpigotMetrics;
 import dev.ratas.slimedogcore.impl.SlimeDogCore;
 import dev.ratas.slimedogcore.impl.utils.UpdateChecker;
 import java.io.File;
+import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.logging.Logger;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.plugin.PluginDescriptionFile;
 
 // import org.bukkit.Bukkit;
 // Imports for Metrics
@@ -74,7 +74,7 @@ public class PluginVersionsBukkit extends SlimeDogCore {
 
         messages = new Messages(getDefaultConfig());
 
-        getCommand("pluginversions").setExecutor(new PluginVersionsCommand(this));
+        Objects.requireNonNull(getCommand("pluginversions")).setExecutor(new PluginVersionsCommand(this));
     }
 
     public Messages getMessages() {
@@ -89,28 +89,29 @@ public class PluginVersionsBukkit extends SlimeDogCore {
 
     public void CreateConfigFileIfMissing() {
         try {
-            PluginDescriptionFile pdfFile = this.getDescription();
+            String pdfFile = this.getPluginMeta().getDescription();
 
             if (!getDataFolder().exists()) {
-                this.log(pdfFile.getName() + ": folder doesn't exist");
-                this.log(pdfFile.getName() + ": creating folder");
+                this.log(pdfFile + ": folder doesn't exist");
+                this.log(pdfFile + ": creating folder");
                 try {
+                    //noinspection ResultOfMethodCallIgnored
                     getDataFolder().mkdirs();
                 } catch (Exception e) {
-                    this.log(pdfFile.getName() + ": could not create folder");
+                    this.log(pdfFile + ": could not create folder");
                     return;
                 }
-                this.log(pdfFile.getName() + ": folder created at " + getDataFolder());
+                this.log(pdfFile + ": folder created at " + getDataFolder());
             }
 
             File configFile = new File(getDataFolder(), "config.yml");
             if (!configFile.exists()) {
-                this.log(pdfFile.getName() + ": config.yml not found, creating!");
+                this.log(pdfFile + ": config.yml not found, creating!");
                 // Copy config.yml from the jar.
                 try {
                     saveDefaultConfig();
                 } catch (Exception e) {
-                    this.log(pdfFile.getName() + ": could not save config.yml");
+                    throw new RuntimeException(e);
                 }
                 // Do not saveConfig() or comments below the header will be deleted.
                 // There are  code samples on the internet that resolve the issue,
@@ -119,14 +120,13 @@ public class PluginVersionsBukkit extends SlimeDogCore {
                 // config.options().copyDefaults(true);
                 // saveConfig();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e);
         }
     }
 
     public void ReadConfigValuesFromFile() {
         this.reloadConfig();
-
         FileConfiguration reloadedConfig = getConfig();
         // Optimized the code to read the configuration options
         configurationSendMetrics = reloadedConfig.getBoolean("enable-metrics", true);
