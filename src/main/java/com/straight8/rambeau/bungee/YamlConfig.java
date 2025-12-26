@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
-
 import net.md_5.bungee.config.Configuration;
 import net.md_5.bungee.config.ConfigurationProvider;
 import net.md_5.bungee.config.YamlConfiguration;
@@ -23,10 +22,10 @@ public class YamlConfig {
         if (!PluginVersionsBungee.getInstance().getDataFolder().exists()) {
             PluginVersionsBungee.getInstance().getDataFolder().mkdir();
         }
-        File fileconfig = new File(PluginVersionsBungee.getInstance().getDataFolder(), file+".yml");
+        File fileconfig = new File(PluginVersionsBungee.getInstance().getDataFolder(), file + ".yml");
         if (!fileconfig.exists()) {
             try {
-                InputStream in = PluginVersionsBungee.getInstance().getResourceAsStream(file+".yml");
+                InputStream in = PluginVersionsBungee.getInstance().getResourceAsStream(file + ".yml");
                 Files.copy(in, fileconfig.toPath());
             } catch (IOException e) {
                 e.printStackTrace();
@@ -35,7 +34,7 @@ public class YamlConfig {
     }
 
     public static Configuration getConfiguration(String file) {
-        File configFile = new File(PluginVersionsBungee.getInstance().getDataFolder(), file+".yml");
+        File configFile = new File(PluginVersionsBungee.getInstance().getDataFolder(), file + ".yml");
         if (!configFile.exists()) {
             return null;
         }

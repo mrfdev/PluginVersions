@@ -41,9 +41,9 @@ public class SpigotMetrics {
     /**
      * Creates a new Metrics instance.
      *
-     * @param plugin Your plugin instance.
+     * @param plugin    Your plugin instance.
      * @param serviceId The id of the service. It can be found at <a
-     *     href="https://bstats.org/what-is-my-plugin-id">What is my plugin id?</a>
+     *                  href="https://bstats.org/what-is-my-plugin-id">What is my plugin id?</a>
      */
     public SpigotMetrics(JavaPlugin plugin, int serviceId) {
         this.plugin = plugin;
@@ -137,7 +137,9 @@ public class SpigotMetrics {
 
     public static class MetricsBase {
 
-        /** The version of the Metrics class. */
+        /**
+         * The version of the Metrics class.
+         */
         public static final String METRICS_VERSION = "2.2.1";
 
         private static final ScheduledExecutorService scheduler =
@@ -176,23 +178,23 @@ public class SpigotMetrics {
         /**
          * Creates a new MetricsBase class instance.
          *
-         * @param platform The platform of the service.
-         * @param serviceId The id of the service.
-         * @param serverUuid The server uuid.
-         * @param enabled Whether or not data sending is enabled.
-         * @param appendPlatformDataConsumer A consumer that receives a {@code JsonObjectBuilder} and
-         *     appends all platform-specific data.
-         * @param appendServiceDataConsumer A consumer that receives a {@code JsonObjectBuilder} and
-         *     appends all service-specific data.
-         * @param submitTaskConsumer A consumer that takes a runnable with the submit task. This can be
-         *     used to delegate the data collection to a another thread to prevent errors caused by
-         *     concurrency. Can be {@code null}.
+         * @param platform                    The platform of the service.
+         * @param serviceId                   The id of the service.
+         * @param serverUuid                  The server uuid.
+         * @param enabled                     Whether or not data sending is enabled.
+         * @param appendPlatformDataConsumer  A consumer that receives a {@code JsonObjectBuilder} and
+         *                                    appends all platform-specific data.
+         * @param appendServiceDataConsumer   A consumer that receives a {@code JsonObjectBuilder} and
+         *                                    appends all service-specific data.
+         * @param submitTaskConsumer          A consumer that takes a runnable with the submit task. This can be
+         *                                    used to delegate the data collection to a another thread to prevent errors caused by
+         *                                    concurrency. Can be {@code null}.
          * @param checkServiceEnabledSupplier A supplier to check if the service is still enabled.
-         * @param errorLogger A consumer that accepts log message and an error.
-         * @param infoLogger A consumer that accepts info log messages.
-         * @param logErrors Whether or not errors should be logged.
-         * @param logSentData Whether or not the sent data should be logged.
-         * @param logResponseStatusText Whether or not the response status text should be logged.
+         * @param errorLogger                 A consumer that accepts log message and an error.
+         * @param infoLogger                  A consumer that accepts info log messages.
+         * @param logErrors                   Whether or not errors should be logged.
+         * @param logSentData                 Whether or not the sent data should be logged.
+         * @param logResponseStatusText       Whether or not the response status text should be logged.
          */
         public MetricsBase(
                 String platform,
@@ -225,6 +227,23 @@ public class SpigotMetrics {
             if (enabled) {
                 startSubmitting();
             }
+        }
+
+        /**
+         * Gzips the given string.
+         *
+         * @param str The string to gzip.
+         * @return The gzipped string.
+         */
+        private static byte[] compress(final String str) throws IOException {
+            if (str == null) {
+                return null;
+            }
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            try (GZIPOutputStream gzip = new GZIPOutputStream(outputStream)) {
+                gzip.write(str.getBytes(StandardCharsets.UTF_8));
+            }
+            return outputStream.toByteArray();
         }
 
         public void addCustomChart(CustomChart chart) {
@@ -321,7 +340,9 @@ public class SpigotMetrics {
             }
         }
 
-        /** Checks that the class was properly relocated. */
+        /**
+         * Checks that the class was properly relocated.
+         */
         private void checkRelocation() {
             // You can use the property to disable the check in your test environment
             if (System.getProperty("bstats.relocatecheck") == null
@@ -329,9 +350,9 @@ public class SpigotMetrics {
                 // Maven's Relocate is clever and changes strings, too. So we have to use this little
                 // "trick" ... :D
                 final String defaultPackage =
-                        new String(new byte[] {'o', 'r', 'g', '.', 'b', 's', 't', 'a', 't', 's'});
+                        new String(new byte[]{'o', 'r', 'g', '.', 'b', 's', 't', 'a', 't', 's'});
                 final String examplePackage =
-                        new String(new byte[] {'y', 'o', 'u', 'r', '.', 'p', 'a', 'c', 'k', 'a', 'g', 'e'});
+                        new String(new byte[]{'y', 'o', 'u', 'r', '.', 'p', 'a', 'c', 'k', 'a', 'g', 'e'});
                 // We want to make sure no one just copy & pastes the example and uses the wrong package
                 // names
                 if (MetricsBase.class.getPackage().getName().startsWith(defaultPackage)
@@ -339,23 +360,6 @@ public class SpigotMetrics {
                     throw new IllegalStateException("bStats Metrics class has not been relocated correctly!");
                 }
             }
-        }
-
-        /**
-         * Gzips the given string.
-         *
-         * @param str The string to gzip.
-         * @return The gzipped string.
-         */
-        private static byte[] compress(final String str) throws IOException {
-            if (str == null) {
-                return null;
-            }
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            try (GZIPOutputStream gzip = new GZIPOutputStream(outputStream)) {
-                gzip.write(str.getBytes(StandardCharsets.UTF_8));
-            }
-            return outputStream.toByteArray();
         }
     }
 
@@ -366,7 +370,7 @@ public class SpigotMetrics {
         /**
          * Class constructor.
          *
-         * @param chartId The id of the chart.
+         * @param chartId  The id of the chart.
          * @param callable The callable which is used to request the chart data.
          */
         public AdvancedBarChart(String chartId, Callable<Map<String, int[]>> callable) {
@@ -406,7 +410,7 @@ public class SpigotMetrics {
         /**
          * Class constructor.
          *
-         * @param chartId The id of the chart.
+         * @param chartId  The id of the chart.
          * @param callable The callable which is used to request the chart data.
          */
         public SimpleBarChart(String chartId, Callable<Map<String, Integer>> callable) {
@@ -423,7 +427,7 @@ public class SpigotMetrics {
                 return null;
             }
             for (Map.Entry<String, Integer> entry : map.entrySet()) {
-                valuesBuilder.appendField(entry.getKey(), new int[] {entry.getValue()});
+                valuesBuilder.appendField(entry.getKey(), new int[]{entry.getValue()});
             }
             return new JsonObjectBuilder().appendField("values", valuesBuilder.build()).build();
         }
@@ -436,7 +440,7 @@ public class SpigotMetrics {
         /**
          * Class constructor.
          *
-         * @param chartId The id of the chart.
+         * @param chartId  The id of the chart.
          * @param callable The callable which is used to request the chart data.
          */
         public MultiLineChart(String chartId, Callable<Map<String, Integer>> callable) {
@@ -476,7 +480,7 @@ public class SpigotMetrics {
         /**
          * Class constructor.
          *
-         * @param chartId The id of the chart.
+         * @param chartId  The id of the chart.
          * @param callable The callable which is used to request the chart data.
          */
         public AdvancedPie(String chartId, Callable<Map<String, Integer>> callable) {
@@ -550,7 +554,7 @@ public class SpigotMetrics {
         /**
          * Class constructor.
          *
-         * @param chartId The id of the chart.
+         * @param chartId  The id of the chart.
          * @param callable The callable which is used to request the chart data.
          */
         public SingleLineChart(String chartId, Callable<Integer> callable) {
@@ -576,7 +580,7 @@ public class SpigotMetrics {
         /**
          * Class constructor.
          *
-         * @param chartId The id of the chart.
+         * @param chartId  The id of the chart.
          * @param callable The callable which is used to request the chart data.
          */
         public SimplePie(String chartId, Callable<String> callable) {
@@ -602,7 +606,7 @@ public class SpigotMetrics {
         /**
          * Class constructor.
          *
-         * @param chartId The id of the chart.
+         * @param chartId  The id of the chart.
          * @param callable The callable which is used to request the chart data.
          */
         public DrilldownPie(String chartId, Callable<Map<String, Map<String, Integer>>> callable) {
@@ -656,6 +660,34 @@ public class SpigotMetrics {
         }
 
         /**
+         * Escapes the given string like stated in https://www.ietf.org/rfc/rfc4627.txt.
+         *
+         * <p>This method escapes only the necessary characters '"', '\'. and '\u0000' - '\u001F'.
+         * Compact escapes are not used (e.g., '\n' is escaped as "\u000a" and not as "\n").
+         *
+         * @param value The value to escape.
+         * @return The escaped value.
+         */
+        private static String escape(String value) {
+            final StringBuilder builder = new StringBuilder();
+            for (int i = 0; i < value.length(); i++) {
+                char c = value.charAt(i);
+                if (c == '"') {
+                    builder.append("\\\"");
+                } else if (c == '\\') {
+                    builder.append("\\\\");
+                } else if (c <= '\u000F') {
+                    builder.append("\\u000").append(Integer.toHexString(c));
+                } else if (c <= '\u001F') {
+                    builder.append("\\u00").append(Integer.toHexString(c));
+                } else {
+                    builder.append(c);
+                }
+            }
+            return builder.toString();
+        }
+
+        /**
          * Appends a null field to the JSON.
          *
          * @param key The key of the field.
@@ -669,7 +701,7 @@ public class SpigotMetrics {
         /**
          * Appends a string field to the JSON.
          *
-         * @param key The key of the field.
+         * @param key   The key of the field.
          * @param value The value of the field.
          * @return A reference to this object.
          */
@@ -684,7 +716,7 @@ public class SpigotMetrics {
         /**
          * Appends an integer field to the JSON.
          *
-         * @param key The key of the field.
+         * @param key   The key of the field.
          * @param value The value of the field.
          * @return A reference to this object.
          */
@@ -696,7 +728,7 @@ public class SpigotMetrics {
         /**
          * Appends an object to the JSON.
          *
-         * @param key The key of the field.
+         * @param key    The key of the field.
          * @param object The object.
          * @return A reference to this object.
          */
@@ -711,7 +743,7 @@ public class SpigotMetrics {
         /**
          * Appends a string array to the JSON.
          *
-         * @param key The key of the field.
+         * @param key    The key of the field.
          * @param values The string array.
          * @return A reference to this object.
          */
@@ -730,7 +762,7 @@ public class SpigotMetrics {
         /**
          * Appends an integer array to the JSON.
          *
-         * @param key The key of the field.
+         * @param key    The key of the field.
          * @param values The integer array.
          * @return A reference to this object.
          */
@@ -747,7 +779,7 @@ public class SpigotMetrics {
         /**
          * Appends an object array to the JSON.
          *
-         * @param key The key of the field.
+         * @param key    The key of the field.
          * @param values The integer array.
          * @return A reference to this object.
          */
@@ -764,7 +796,7 @@ public class SpigotMetrics {
         /**
          * Appends a field to the object.
          *
-         * @param key The key of the field.
+         * @param key          The key of the field.
          * @param escapedValue The escaped value of the field.
          */
         private void appendFieldUnescaped(String key, String escapedValue) {
@@ -793,34 +825,6 @@ public class SpigotMetrics {
             JsonObject object = new JsonObject(builder.append("}").toString());
             builder = null;
             return object;
-        }
-
-        /**
-         * Escapes the given string like stated in https://www.ietf.org/rfc/rfc4627.txt.
-         *
-         * <p>This method escapes only the necessary characters '"', '\'. and '\u0000' - '\u001F'.
-         * Compact escapes are not used (e.g., '\n' is escaped as "\u000a" and not as "\n").
-         *
-         * @param value The value to escape.
-         * @return The escaped value.
-         */
-        private static String escape(String value) {
-            final StringBuilder builder = new StringBuilder();
-            for (int i = 0; i < value.length(); i++) {
-                char c = value.charAt(i);
-                if (c == '"') {
-                    builder.append("\\\"");
-                } else if (c == '\\') {
-                    builder.append("\\\\");
-                } else if (c <= '\u000F') {
-                    builder.append("\\u000").append(Integer.toHexString(c));
-                } else if (c <= '\u001F') {
-                    builder.append("\\u00").append(Integer.toHexString(c));
-                } else {
-                    builder.append(c);
-                }
-            }
-            return builder.toString();
         }
 
         /**

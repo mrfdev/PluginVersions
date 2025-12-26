@@ -2,15 +2,12 @@ package com.straight8.rambeau.velocity;
 
 import com.google.common.io.Resources;
 import com.google.common.net.HttpHeaders;
-import com.straight8.rambeau.bungee.PluginVersionsBungee;
-
-import javax.net.ssl.HttpsURLConnection;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.Charset;
-import java.util.concurrent.TimeUnit;
 import java.util.function.BiConsumer;
+import javax.net.ssl.HttpsURLConnection;
 
 public class UpdateChecker {
     private static final String SPIGOT_URL = "https://api.spigotmc.org/legacy/update.php?resource=70927";
@@ -18,7 +15,7 @@ public class UpdateChecker {
     private final PluginVersionsVelocity plugin;
 
     private final String currentVersion;
-    
+
     private final BiConsumer<VersionResponse, String> versionResponse;
 
     public UpdateChecker(PluginVersionsVelocity plugin, BiConsumer<VersionResponse, String> consumer) {
@@ -45,7 +42,7 @@ public class UpdateChecker {
             }
         }).schedule();
     }
-    
+
     public enum VersionResponse {
         LATEST,
         FOUND_NEW,

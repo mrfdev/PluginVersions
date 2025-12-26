@@ -12,7 +12,7 @@ public class SLPUtils {
     }
 
     public static String getSLPVersion() {
-        CoreDescription info =  CoreDescription.load(ServerListPlusCore.getInstance());
+        CoreDescription info = CoreDescription.load(ServerListPlusCore.getInstance());
 
         return info.getVersion();
     }

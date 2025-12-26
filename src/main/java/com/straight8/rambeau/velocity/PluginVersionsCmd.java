@@ -6,19 +6,18 @@ import com.velocitypowered.api.command.CommandSource;
 import com.velocitypowered.api.command.RawCommand;
 import com.velocitypowered.api.plugin.PluginContainer;
 import com.velocitypowered.api.proxy.Player;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.JoinConfiguration;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-
 public class PluginVersionsCmd implements RawCommand {
     private static final int LINES_PER_PAGE = 10;
-
+    private static final char COLOR_STR = '&';
     private final PluginVersionsVelocity plugin;
 
     public PluginVersionsCmd(PluginVersionsVelocity plugin) {
@@ -169,9 +168,7 @@ public class PluginVersionsCmd implements RawCommand {
         }
     }
 
-    private static final char COLOR_STR = '&';
-
-    private static enum Color {
+    private enum Color {
         BLACK('0', NamedTextColor.BLACK),
         DARK_BLUE('1', NamedTextColor.DARK_BLUE),
         DARK_GREEN('2', NamedTextColor.DARK_GREEN),
@@ -197,10 +194,18 @@ public class PluginVersionsCmd implements RawCommand {
 
         private static final String COLOR_CHARS;
 
+        static {
+            StringBuilder colorChars = new StringBuilder();
+            for (Color color : values()) {
+                colorChars.append(color.c);
+            }
+            COLOR_CHARS = colorChars.toString();
+        }
+
         private final char c;
         private final TextColor color;
 
-        private Color(char c, TextColor color) {
+        Color(char c, TextColor color) {
             this.c = c;
             this.color = color;
         }
@@ -231,14 +236,6 @@ public class PluginVersionsCmd implements RawCommand {
                 compList.add(Component.text(msg.substring(lastEnd + 2, msg.length()), nextColor));
             }
             return Component.join(JoinConfiguration.noSeparators(), compList);
-        }
-
-        static {
-            StringBuilder colorChars = new StringBuilder();
-            for (Color color : values()) {
-                colorChars.append(color.c);
-            }
-            COLOR_CHARS = colorChars.toString();
         }
 
     }

@@ -1,18 +1,16 @@
 package com.straight8.rambeau.bungee;
 
+import com.straight8.rambeau.util.CommandPageUtils;
+import com.straight8.rambeau.util.StringUtil;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.api.plugin.TabExecutor;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import com.straight8.rambeau.util.CommandPageUtils;
-import com.straight8.rambeau.util.StringUtil;
 
 public class PluginVersionsCmd extends Command implements TabExecutor {
     private static final int LINES_PER_PAGE = 10;
@@ -23,6 +21,10 @@ public class PluginVersionsCmd extends Command implements TabExecutor {
         super("pluginversions", "pluginversions.list", "pvb");
 
         this.plugin = plugin;
+    }
+
+    public static String color(String msg) {
+        return ChatColor.translateAlternateColorCodes('&', msg);
     }
 
     private void showUsage(CommandSender source) {
@@ -136,10 +138,6 @@ public class PluginVersionsCmd extends Command implements TabExecutor {
         } else {
             return Collections.emptyList();
         }
-    }
-
-    public static String color(String msg) {
-        return ChatColor.translateAlternateColorCodes('&', msg);
     }
 
 }

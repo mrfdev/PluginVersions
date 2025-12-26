@@ -10,6 +10,7 @@ public final class StringUtil {
     // THE FOLLOWING TWO METHODS ARE COPIED FROM bukkit:
     // https://hub.spigotmc.org/stash/projects/SPIGOT/repos/bukkit/browse/src/main/java/org/bukkit/util/StringUtil.java
     // copied on 24.03.2023
+
     /**
      * Copies all elements from the iterable collection of originals to the
      * collection provided.
@@ -19,7 +20,7 @@ public final class StringUtil {
      * @param originals  An iterable collection of strings to filter.
      * @param collection The collection to add matches to
      * @return the collection provided that would have the elements copied
-     *         into
+     * into
      * @throws UnsupportedOperationException if the collection is immutable
      *                                       and originals contains a string which
      *                                       starts with the specified
@@ -29,7 +30,7 @@ public final class StringUtil {
      *                                       before this is thrown</b>
      */
     public static <T extends Collection<? super String>> T copyPartialMatches(final String token,
-            final Iterable<String> originals, final T collection)
+                                                                              final Iterable<String> originals, final T collection)
             throws UnsupportedOperationException, IllegalArgumentException {
         for (String string : originals) {
             if (startsWithIgnoreCase(string, token)) {
@@ -48,7 +49,7 @@ public final class StringUtil {
      * @param string String to check
      * @param prefix Prefix of string to compare
      * @return true if provided string starts with, ignoring case, the prefix
-     *         provided
+     * provided
      * @throws IllegalArgumentException if string is null
      */
     public static boolean startsWithIgnoreCase(final String string, final String prefix)

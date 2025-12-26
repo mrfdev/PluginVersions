@@ -1,15 +1,12 @@
 package com.straight8.rambeau.bukkit.command.sub;
 
-import java.util.Collections;
-import java.util.List;
-
-import org.bukkit.ChatColor;
-
 import com.straight8.rambeau.bukkit.PluginVersionsBukkit;
-
 import dev.ratas.slimedogcore.api.commands.SDCCommandOptionSet;
 import dev.ratas.slimedogcore.api.messaging.recipient.SDCRecipient;
 import dev.ratas.slimedogcore.impl.commands.AbstractSubCommand;
+import java.util.Collections;
+import java.util.List;
+import org.bukkit.ChatColor;
 
 public class ReloadSub extends AbstractSubCommand {
     private static final String NAME = "reload";

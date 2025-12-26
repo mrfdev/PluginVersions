@@ -14,6 +14,10 @@ public class PluginVersionsBungee extends Plugin {
 
     private Configuration config;
 
+    public static PluginVersionsBungee getInstance() {
+        return instance;
+    }
+
     @Override
     public void onEnable() {
         instance = this;
@@ -29,7 +33,7 @@ public class PluginVersionsBungee extends Plugin {
         this.getProxy().getPluginManager().registerCommand(this, new PluginVersionsCmd(this));
 
         if (checkUpdates) {
-            new UpdateChecker(this, (response, version)-> {
+            new UpdateChecker(this, (response, version) -> {
                 switch (response) {
                     case LATEST: {
                         getLogger().info("Running latest version!");
@@ -46,10 +50,6 @@ public class PluginVersionsBungee extends Plugin {
                 }
             }).check();
         }
-    }
-
-    public static PluginVersionsBungee getInstance() {
-        return instance;
     }
 
     public void ReadConfigValuesFromFile() {

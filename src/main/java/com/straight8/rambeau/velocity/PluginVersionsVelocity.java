@@ -9,26 +9,23 @@ import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
 import com.velocitypowered.api.plugin.Plugin;
 import com.velocitypowered.api.plugin.annotation.DataDirectory;
 import com.velocitypowered.api.proxy.ProxyServer;
-import org.slf4j.Logger;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.nio.file.Path;
+import org.slf4j.Logger;
 
 @Plugin(id = "pluginversions", name = "PluginVersions", version = "1.3.5", description = "List installed plugins and versions alphabetically", authors = {"drives_a_ford", "GabrielHD150", "SlimeDog"})
 public class PluginVersionsVelocity {
 
     private static PluginVersionsVelocity instance;
-    private YamlConfig yamlConfig;
-
     private final Path dataDirectory;
     private final ProxyServer server;
     private final Logger logger;
-
+    private final VelocityMetrics.Factory metricsFactory;
+    private YamlConfig yamlConfig;
     private boolean configurationSendMetrics = true;
     private boolean checkUpdates = true;
-    private final VelocityMetrics.Factory metricsFactory;
 
     @Inject
     public PluginVersionsVelocity(ProxyServer server, Logger logger, @DataDirectory Path dataDirectory, VelocityMetrics.Factory metricsFactory) {
@@ -39,6 +36,10 @@ public class PluginVersionsVelocity {
 
         this.dataDirectory = dataDirectory;
         this.metricsFactory = metricsFactory;
+    }
+
+    public static PluginVersionsVelocity getInstance() {
+        return instance;
     }
 
     @Subscribe
@@ -70,7 +71,7 @@ public class PluginVersionsVelocity {
         commandManager.register(meta, new PluginVersionsCmd(this));
 
         if (checkUpdates) {
-            new UpdateChecker(this, (response, version)-> {
+            new UpdateChecker(this, (response, version) -> {
                 switch (response) {
                     case LATEST: {
                         this.logger.info("Running latest version!");
@@ -87,10 +88,6 @@ public class PluginVersionsVelocity {
                 }
             }).check();
         }
-    }
-
-    public static PluginVersionsVelocity getInstance() {
-        return instance;
     }
 
     public YamlConfig getConfig() {

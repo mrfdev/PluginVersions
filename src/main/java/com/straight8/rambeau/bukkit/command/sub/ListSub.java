@@ -1,20 +1,17 @@
 package com.straight8.rambeau.bukkit.command.sub;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
-import org.bukkit.plugin.Plugin;
-
 import com.straight8.rambeau.bukkit.PluginComparator;
 import com.straight8.rambeau.bukkit.PluginVersionsBukkit;
 import com.straight8.rambeau.util.CommandPageUtils;
-
 import dev.ratas.slimedogcore.api.commands.SDCCommandOptionSet;
 import dev.ratas.slimedogcore.api.messaging.factory.SDCTripleContextMessageFactory;
 import dev.ratas.slimedogcore.api.messaging.recipient.SDCPlayerRecipient;
 import dev.ratas.slimedogcore.api.messaging.recipient.SDCRecipient;
 import dev.ratas.slimedogcore.impl.commands.AbstractSubCommand;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import org.bukkit.plugin.Plugin;
 
 public class ListSub extends AbstractSubCommand {
     private static final String NAME = "list";

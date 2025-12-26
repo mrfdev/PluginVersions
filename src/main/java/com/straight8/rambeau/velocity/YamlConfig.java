@@ -1,7 +1,5 @@
 package com.straight8.rambeau.velocity;
 
-import org.yaml.snakeyaml.Yaml;
-
 import java.io.*;
 import java.nio.file.Files;
 import java.util.ArrayList;
@@ -9,27 +7,13 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
+import org.yaml.snakeyaml.Yaml;
 
 public class YamlConfig {
     private static final String DELIMITER = ".";
     private final String currentPath;
     private final String name;
     private final Map<String, Object> map;
-
-    public static void createFiles(String file) {
-        if (!PluginVersionsVelocity.getInstance().getDataFolder().exists()) {
-            PluginVersionsVelocity.getInstance().getDataFolder().mkdir();
-        }
-
-        File fileconfig = new File(PluginVersionsVelocity.getInstance().getDataFolder(), file+".yml");
-        if (!fileconfig.exists()) {
-            try (InputStream in = PluginVersionsVelocity.getInstance().getResourceAsStream(file+".yml")) {
-                Files.copy(in, fileconfig.toPath());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
 
     public YamlConfig(File file) throws FileNotFoundException {
         this(new Yaml().load(new FileInputStream(file)), "");
@@ -40,6 +24,21 @@ public class YamlConfig {
         this.currentPath = currentPath;
         String[] split = currentPath.split(Pattern.quote(DELIMITER));
         this.name = split[split.length - 1]; // last part
+    }
+
+    public static void createFiles(String file) {
+        if (!PluginVersionsVelocity.getInstance().getDataFolder().exists()) {
+            PluginVersionsVelocity.getInstance().getDataFolder().mkdir();
+        }
+
+        File fileconfig = new File(PluginVersionsVelocity.getInstance().getDataFolder(), file + ".yml");
+        if (!fileconfig.exists()) {
+            try (InputStream in = PluginVersionsVelocity.getInstance().getResourceAsStream(file + ".yml")) {
+                Files.copy(in, fileconfig.toPath());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public Collection<String> getKeys(boolean deep) {
@@ -205,7 +204,7 @@ public class YamlConfig {
             return new ArrayList<>(); // empty list
         }
         if (list.get(0) instanceof String) {
-            return (List<String>) list; // unchecked
+            return list; // unchecked
         }
         return new ArrayList<>();
     }

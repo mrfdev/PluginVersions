@@ -9,7 +9,7 @@ public final class CommandPageUtils {
     private CommandPageUtils() {
     }
 
-    public static final boolean isInteger(String str) {
+    public static boolean isInteger(String str) {
         try {
             Integer.valueOf(str);
             return true;
@@ -18,7 +18,7 @@ public final class CommandPageUtils {
         }
     }
 
-    public static final List<String> getNextInteger(String argument, int maxPage) {
+    public static List<String> getNextInteger(String argument, int maxPage) {
         List<String> options = new ArrayList<>();
         int curNr;
         if (argument.isEmpty()) {
@@ -56,14 +56,14 @@ public final class CommandPageUtils {
         return list;
     }
 
-    public static final String getSpacingFor(String name, int maxLength, boolean isPlayer) {
+    public static String getSpacingFor(String name, int maxLength, boolean isPlayer) {
         if (isPlayer) {
             return " ";
         }
         return " ".repeat(maxLength - name.length());
     }
 
-    public static final <T> int getMaxNameLength(Function<T, String> nameGetter, List<T> plugins) {
+    public static <T> int getMaxNameLength(Function<T, String> nameGetter, List<T> plugins) {
         List<String> names = new ArrayList<>();
         for (T plugin : plugins) {
             names.add(nameGetter.apply(plugin));
@@ -71,7 +71,7 @@ public final class CommandPageUtils {
         return getMaxNameLength(names);
     }
 
-    public static final int getMaxNameLength(List<String> pluginNames) {
+    public static int getMaxNameLength(List<String> pluginNames) {
         int len = 0;
         for (String name : pluginNames) {
             if (name.length() > len) {
