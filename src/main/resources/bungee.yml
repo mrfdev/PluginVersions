@@ -1,5 +1,0 @@
-name: PluginVersions
-version: ${project.version}
-main: com.straight8.rambeau.bungee.PluginVersionsBungee
-description: List installed plugins and versions alphabetically
-authors: [drives_a_ford, GabrielHD150, SlimeDog]
