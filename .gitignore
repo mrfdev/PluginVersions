@@ -1,5 +1,8 @@
 # Created by https://www.gitignore.io/api/maven,eclipse,intellij,netbeans,osx,windows,notepadpp,windows,java
 
+# Local Paper test servers and generated runtime data
+/servers/
+
 ### Maven ###
 target/
 pom.xml.tag
@@ -10,6 +13,13 @@ release.properties
 dependency-reduced-pom.xml
 buildNumber.properties
 .mvn/timing.properties
+
+### Gradle ###
+.gradle/
+build/
+builds/
+out/
+!gradle/wrapper/gradle-wrapper.jar
 
 
 ### Eclipse ###
@@ -84,6 +94,9 @@ nbactions.xml
 
 ### OSX ###
 .DS_Store
+.ds_store
+**/.DS_Store
+**/.ds_store
 .AppleDouble
 .LSOverride
 
@@ -133,6 +146,7 @@ $RECYCLE.BIN/
 
 ### Java ###
 *.class
+*.log
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/

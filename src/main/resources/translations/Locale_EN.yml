@@ -1,0 +1,192 @@
+# PluginVersions English language file
+# MiniMessage formatting is supported. Legacy ampersand color codes are migrated
+# at runtime if an older value is found, but new phrases should use MiniMessage.
+
+language-file-version: 4
+prefix: "<#b8e0d2>PluginVersions</#b8e0d2><#f4f1de> | </#f4f1de>"
+
+errors:
+  no-permission: "<#f28482>You need <#f6bd60>{permission}</#f6bd60> to do that."
+  unknown-command: "<#f28482>Unknown command <#f6bd60>{command}</#f6bd60>."
+
+list:
+  empty: "<#f28482>No plugins are loaded."
+  header: "<#cdb4db>Plugins</#cdb4db><#f4f1de>: {count} total, {enabled} enabled, {disabled} disabled</#f4f1de>"
+  page-header: "<#cdb4db>Plugins</#cdb4db><#f4f1de>: page {page}/{pages}, {count} total</#f4f1de>"
+  enabled-version: "<#b8e0d2> - {name}</#b8e0d2><#f4f1de>{spacing}</#f4f1de><#f6bd60>{version}</#f6bd60>"
+  disabled-version: "<#f28482> - {name}</#f28482><#f4f1de>{spacing}</#f4f1de><#f6bd60>{version}</#f6bd60>"
+
+reload:
+  complete: "<#b8e0d2>Reloaded configuration and translations.</#b8e0d2> <#f4f1de>Locale: {locale}. Database: {database-file}. Plugins tracked this scan: {plugins}.</#f4f1de>"
+
+export:
+  usage: "<#f6bd60>Usage:</#f6bd60> <#f4f1de>/pv export [markdown|discord]</#f4f1de>"
+  complete: "<#b8e0d2>Exported</#b8e0d2> <#f6bd60>{format}</#f6bd60> <#b8e0d2>inventory to</#b8e0d2> <#f6bd60>{file}</#f6bd60><#b8e0d2>. Latest:</#b8e0d2> <#f6bd60>{latest-file}</#f6bd60>"
+  failed: "<#f28482>Could not export plugin inventory:</#f28482> <#f6bd60>{error}</#f6bd60>"
+
+url:
+  usage: "<#f6bd60>Usage:</#f6bd60> <#f4f1de>/pv debug url add|del [plugin] [type] [url], /pv debug url list [plugin], or /pv debug url audit [page]</#f4f1de>"
+  invalid-url: "<#f28482>Invalid URL:</#f28482> <#f6bd60>{url}</#f6bd60>"
+  invalid-category: "<#f28482>Invalid URL type:</#f28482> <#f6bd60>{category}</#f6bd60><#f28482>. Use letters, numbers, dash, or underscore.</#f28482>"
+  plugin-not-found: "<#f28482>Plugin not found in the inventory database:</#f28482> <#f6bd60>{plugin}</#f6bd60>"
+  add-complete: "<#b8e0d2>Added</#b8e0d2> <#f6bd60>{category}</#f6bd60> <#b8e0d2>URL for</#b8e0d2> <#f6bd60>{plugin}</#f6bd60><#b8e0d2>:</#b8e0d2> <#f4f1de>{url}</#f4f1de>"
+  add-existing: "<#f6bd60>{plugin}</#f6bd60><#f4f1de> already has that <#f6bd60>{category}</#f6bd60> URL: {url}</#f4f1de>"
+  del-complete: "<#b8e0d2>Removed</#b8e0d2> <#f6bd60>{category}</#f6bd60> <#b8e0d2>URL from</#b8e0d2> <#f6bd60>{plugin}</#f6bd60><#b8e0d2>:</#b8e0d2> <#f4f1de>{url}</#f4f1de>"
+  del-missing: "<#f6bd60>{plugin}</#f6bd60><#f4f1de> does not have that <#f6bd60>{category}</#f6bd60> URL: {url}</#f4f1de>"
+  list-empty: "<#f6bd60>{plugin}</#f6bd60><#f4f1de> has no manual URLs yet.</#f4f1de>"
+  list-header: "<#b8e0d2>Manual URLs for</#b8e0d2> <#f6bd60>{plugin}</#f6bd60><#b8e0d2>:</#b8e0d2>"
+  list-line: "<#f6bd60>{category}</#f6bd60><#f4f1de>: {url}</#f4f1de>"
+  audit-empty: "<#f28482>No plugin URL audit data is available yet.</#f28482>"
+  audit-header: "<#cdb4db>URL Audit</#cdb4db><#f4f1de>: page {page}/{pages}, {count} plugins tracked</#f4f1de>"
+  audit-line: "<#f6bd60>{plugin}</#f6bd60><#f4f1de>: {status}, detected {detected}, manual {manual}, types {categories}</#f4f1de>"
+
+set:
+  usage: "<#f6bd60>Usage:</#f6bd60> <#f4f1de>/pv set [path] [value]</#f4f1de>"
+  unknown-path: "<#f28482>Unknown config path:</#f28482> <#f6bd60>{path}</#f6bd60>"
+  invalid-value: "<#f28482>Could not set</#f28482> <#f6bd60>{path}</#f6bd60> <#f28482>to</#f28482> <#f6bd60>{value}</#f6bd60><#f28482>.</#f28482>"
+  console-only: "<#f28482>The</#f28482> <#f6bd60>{path}</#f6bd60> <#f28482>path can only be changed from the console.</#f28482>"
+  complete: "<#b8e0d2>Updated</#b8e0d2> <#f6bd60>{path}</#f6bd60> <#b8e0d2>to</#b8e0d2> <#f6bd60>{value}</#f6bd60><#b8e0d2>.</#b8e0d2>"
+
+config:
+  header: "<#cdb4db>Config</#cdb4db><#f4f1de>: page {page}/{pages}</#f4f1de>"
+  line: "<#f6bd60>{path}</#f6bd60><#f4f1de>: {value}</#f4f1de>"
+
+help:
+  header: "<#b8e0d2>Help</#b8e0d2><#f4f1de>: {title} ({page}/{pages})</#f4f1de>"
+  pages:
+    overview:
+      title: "Overview"
+      lines:
+        - "<#f4f1de>Use <#f6bd60>/{alias} list</#f6bd60> to list plugins and <#f6bd60>/{alias} help commands</#f6bd60> to see every command.</#f4f1de>"
+        - "<#f4f1de>Console commands are supported. In-game use requires the matching permission.</#f4f1de>"
+        - "<#f4f1de>Inventory scans update the YAML database and <#f6bd60>/{alias} export</#f6bd60> writes timestamped and latest Markdown reports.</#f4f1de>"
+    commands:
+      title: "Commands"
+      lines:
+        - "<#f6bd60>/{alias} help [page|topic]</#f6bd60><#f4f1de> - Show help pages.</#f4f1de>"
+        - "<#f6bd60>/{alias} list [page]</#f6bd60><#f4f1de> - List loaded plugins and versions.</#f4f1de>"
+        - "<#f6bd60>/{alias} reload</#f6bd60><#f4f1de> - Reload config and translations.</#f4f1de>"
+        - "<#f6bd60>/{alias} debug [page|topic]</#f6bd60><#f4f1de> - Show status and diagnostics.</#f4f1de>"
+        - "<#f6bd60>/{alias} debug url add|del [plugin] [type] [url]</#f6bd60><#f4f1de> - Manage manual plugin URLs.</#f4f1de>"
+        - "<#f6bd60>/{alias} debug url list [plugin]</#f6bd60><#f4f1de> - List manual URLs.</#f4f1de>"
+        - "<#f6bd60>/{alias} debug url audit [page]</#f6bd60><#f4f1de> - Review URL coverage.</#f4f1de>"
+        - "<#f6bd60>/{alias} config [page]</#f6bd60><#f4f1de> - Show active settings.</#f4f1de>"
+        - "<#f6bd60>/{alias} set [path] [value]</#f6bd60><#f4f1de> - Update a config setting.</#f4f1de>"
+        - "<#f6bd60>/{alias} export [markdown|discord]</#f6bd60><#f4f1de> - Export plugin inventory reports.</#f4f1de>"
+    permissions:
+      title: "Permissions"
+      lines:
+        - "<#f6bd60>pluginversions.*</#f6bd60><#f4f1de> - All PluginVersions commands and URL actions.</#f4f1de>"
+        - "<#f6bd60>pluginversions.help</#f6bd60><#f4f1de> - View help pages.</#f4f1de>"
+        - "<#f6bd60>pluginversions.list</#f6bd60><#f4f1de> - List plugins.</#f4f1de>"
+        - "<#f6bd60>pluginversions.reload</#f6bd60><#f4f1de> - Reload config and translations.</#f4f1de>"
+        - "<#f6bd60>pluginversions.debug</#f6bd60><#f4f1de> - View debug pages.</#f4f1de>"
+        - "<#f6bd60>pluginversions.config</#f6bd60><#f4f1de> - View config values.</#f4f1de>"
+        - "<#f6bd60>pluginversions.set</#f6bd60><#f4f1de> - Change config values.</#f4f1de>"
+        - "<#f6bd60>pluginversions.export</#f6bd60><#f4f1de> - Export inventory reports.</#f4f1de>"
+        - "<#f6bd60>pluginversions.url.list</#f6bd60><#f4f1de>, add, del - Manage URL database entries.</#f4f1de>"
+    placeholders:
+      title: "Placeholders"
+      lines:
+        - "<#f6bd60>{name}</#f6bd60><#f4f1de>, <#f6bd60>{display-name}</#f6bd60>, <#f6bd60>{internal-name}</#f6bd60>, <#f6bd60>{version}</#f6bd60>, and <#f6bd60>{spacing}</#f6bd60> are language tokens.</#f4f1de>"
+        - "<#f6bd60>%pluginversions_total%</#f6bd60><#f4f1de>, enabled, disabled, and database_tracked expose counts through PlaceholderAPI.</#f4f1de>"
+        - "<#f6bd60>%pluginversions_version_[plugin]%</#f6bd60><#f4f1de> returns a loaded plugin version.</#f4f1de>"
+        - "<#f6bd60>%pluginversions_url_[plugin]_[type]%</#f6bd60><#f4f1de> returns the first matching detected or manual URL.</#f4f1de>"
+    config:
+      title: "Config"
+      lines:
+        - "<#f4f1de>Use <#f6bd60>/{alias} config [page]</#f6bd60> to inspect active settings.</#f4f1de>"
+        - "<#f4f1de>Language text is kept in <#f6bd60>translations/Locale_EN.yml</#f6bd60>.</#f4f1de>"
+        - "<#f4f1de>The database file and export folder are relative to <#f6bd60>plugins/1MB-PluginVersions/</#f6bd60> unless an absolute path is used.</#f4f1de>"
+    set:
+      title: "Set"
+      lines:
+        - "<#f4f1de>Use <#f6bd60>/{alias} set settings.lines-per-page 15</#f6bd60> to update a value.</#f4f1de>"
+        - "<#f4f1de>Booleans must be <#f6bd60>true</#f6bd60> or <#f6bd60>false</#f6bd60>; numbers must match the existing value type.</#f4f1de>"
+        - "<#f4f1de>Filesystem paths such as <#f6bd60>database.file</#f6bd60> and <#f6bd60>exports.directory</#f6bd60> are console-only.</#f4f1de>"
+        - "<#f4f1de>Settings are saved to config.yml and reloaded immediately.</#f4f1de>"
+
+debug:
+  header: "<#b8e0d2>Debug</#b8e0d2><#f4f1de>: {title} ({page}/{pages})</#f4f1de>"
+  pages:
+    status:
+      title: "Status"
+      lines:
+        - "<#f6bd60>Status</#f6bd60><#f4f1de>: {status}</#f4f1de>"
+        - "<#f6bd60>Uptime</#f6bd60><#f4f1de>: {uptime}</#f4f1de>"
+        - "<#f6bd60>Locale</#f6bd60><#f4f1de>: {locale}</#f4f1de>"
+        - "<#f6bd60>Database</#f6bd60><#f4f1de>: {database-file}</#f4f1de>"
+        - "<#f6bd60>Tracked plugins</#f6bd60><#f4f1de>: {database-tracked}</#f4f1de>"
+        - "<#f6bd60>Exports</#f6bd60><#f4f1de>: {export-directory}</#f4f1de>"
+    plugin:
+      title: "Plugin"
+      lines:
+        - "<#f6bd60>Name</#f6bd60><#f4f1de>: {plugin-name}</#f4f1de>"
+        - "<#f6bd60>Version</#f6bd60><#f4f1de>: {plugin-version}</#f4f1de>"
+        - "<#f6bd60>Main</#f6bd60><#f4f1de>: {plugin-main}</#f4f1de>"
+        - "<#f6bd60>API</#f6bd60><#f4f1de>: {plugin-api}</#f4f1de>"
+        - "<#f6bd60>Authors</#f6bd60><#f4f1de>: {plugin-authors}</#f4f1de>"
+        - "<#f6bd60>Data folder</#f6bd60><#f4f1de>: {data-folder}</#f4f1de>"
+    server:
+      title: "Server"
+      lines:
+        - "<#f6bd60>Server</#f6bd60><#f4f1de>: {server-name}</#f4f1de>"
+        - "<#f6bd60>Version</#f6bd60><#f4f1de>: {server-version}</#f4f1de>"
+        - "<#f6bd60>Bukkit API</#f6bd60><#f4f1de>: {bukkit-version}</#f4f1de>"
+        - "<#f6bd60>Java</#f6bd60><#f4f1de>: {java-version}</#f4f1de>"
+        - "<#f6bd60>Online players</#f6bd60><#f4f1de>: {online-players}</#f4f1de>"
+        - "<#f6bd60>Worlds</#f6bd60><#f4f1de>: {worlds}</#f4f1de>"
+    plugins:
+      title: "Plugins"
+      lines:
+        - "<#f6bd60>Total</#f6bd60><#f4f1de>: {plugin-count}</#f4f1de>"
+        - "<#f6bd60>Enabled</#f6bd60><#f4f1de>: {enabled-count}</#f4f1de>"
+        - "<#f6bd60>Disabled</#f6bd60><#f4f1de>: {disabled-count}</#f4f1de>"
+        - "<#f6bd60>Tracked in database</#f6bd60><#f4f1de>: {database-tracked}</#f4f1de>"
+        - "<#f6bd60>History limit</#f6bd60><#f4f1de>: {history-limit}</#f4f1de>"
+    commands:
+      title: "Commands"
+      lines:
+        - "<#f6bd60>/{alias} help</#f6bd60><#f4f1de>, <#f6bd60>list</#f6bd60>, <#f6bd60>reload</#f6bd60>, <#f6bd60>debug</#f6bd60>, <#f6bd60>config</#f6bd60>, <#f6bd60>set</#f6bd60>, <#f6bd60>export</#f6bd60>"
+        - "<#f6bd60>/{alias} debug url add|del [plugin] [type] [url]</#f6bd60><#f4f1de> manages manual plugin URLs.</#f4f1de>"
+        - "<#f6bd60>/{alias} debug url audit [page]</#f6bd60><#f4f1de> checks URL coverage for tracked plugins.</#f4f1de>"
+        - "<#f6bd60>/{alias} export markdown</#f6bd60><#f4f1de> and <#f6bd60>/{alias} export discord</#f6bd60> write timestamped and latest reports.</#f4f1de>"
+        - "<#f4f1de>All commands support console execution. In-game command access follows permissions.</#f4f1de>"
+    permissions:
+      title: "Permissions"
+      lines:
+        - "<#f6bd60>pluginversions.*</#f6bd60><#f4f1de> grants every command and URL action.</#f4f1de>"
+        - "<#f6bd60>pluginversions.help</#f6bd60><#f4f1de> defaults to everyone.</#f4f1de>"
+        - "<#f6bd60>pluginversions.list</#f6bd60><#f4f1de>, reload, debug, config, set, and export default to op.</#f4f1de>"
+        - "<#f6bd60>pluginversions.url.list</#f6bd60><#f4f1de> allows URL list and audit.</#f4f1de>"
+        - "<#f6bd60>pluginversions.url.add</#f6bd60><#f4f1de> and <#f6bd60>pluginversions.url.del</#f6bd60> allow manual URL edits.</#f4f1de>"
+    placeholders:
+      title: "Placeholders"
+      lines:
+        - "<#f6bd60>{name}</#f6bd60><#f4f1de>, <#f6bd60>{display-name}</#f6bd60>, <#f6bd60>{internal-name}</#f6bd60>, <#f6bd60>{version}</#f6bd60>, <#f6bd60>{spacing}</#f6bd60>"
+        - "<#f6bd60>{page}</#f6bd60><#f4f1de>, <#f6bd60>{pages}</#f6bd60>, <#f6bd60>{count}</#f6bd60>, <#f6bd60>{enabled}</#f6bd60>, <#f6bd60>{disabled}</#f6bd60>"
+        - "<#f6bd60>%pluginversions_total%</#f6bd60><#f4f1de>, enabled, disabled, database_tracked, version_[plugin], and url_[plugin]_[type] are PlaceholderAPI expansions.</#f4f1de>"
+    config:
+      title: "Config"
+      lines:
+        - "<#f6bd60>Lines per page</#f6bd60><#f4f1de>: {lines-per-page}</#f4f1de>"
+        - "<#f6bd60>Check for updates</#f6bd60><#f4f1de>: {check-for-updates}</#f4f1de>"
+        - "<#f6bd60>Update on enable</#f6bd60><#f4f1de>: {update-on-enable}</#f4f1de>"
+        - "<#f6bd60>Update on list</#f6bd60><#f4f1de>: {update-on-list}</#f4f1de>"
+        - "<#f6bd60>Database file</#f6bd60><#f4f1de>: {database-file}</#f4f1de>"
+        - "<#f6bd60>Export directory</#f6bd60><#f4f1de>: {export-directory}</#f4f1de>"
+    set:
+      title: "Set"
+      lines:
+        - "<#f6bd60>/{alias} set [path] [value]</#f6bd60><#f4f1de> updates config.yml and reloads the plugin settings.</#f4f1de>"
+        - "<#f4f1de>Tab completion lists known config paths.</#f4f1de>"
+        - "<#f4f1de>Filesystem paths are console-only; edit them from the server console or config.yml.</#f4f1de>"
+        - "<#f4f1de>Use <#f6bd60>/{alias} config</#f6bd60> before editing if you want to confirm the active value.</#f4f1de>"
+    url:
+      title: "URLs"
+      lines:
+        - "<#f6bd60>/{alias} debug url add [plugin] [url]</#f6bd60><#f4f1de> infers a type from the URL.</#f4f1de>"
+        - "<#f6bd60>/{alias} debug url add [plugin] [type] [url]</#f6bd60><#f4f1de> stores a custom type such as source, docs, or download.</#f4f1de>"
+        - "<#f6bd60>/{alias} debug url del [plugin] [type] [url]</#f6bd60><#f4f1de> removes a manual URL.</#f4f1de>"
+        - "<#f6bd60>/{alias} debug url list [plugin]</#f6bd60><#f4f1de> shows manual URLs.</#f4f1de>"
+        - "<#f6bd60>/{alias} debug url audit [page]</#f6bd60><#f4f1de> shows missing, detected-only, and manually curated URL coverage.</#f4f1de>"

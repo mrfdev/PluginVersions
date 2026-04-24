@@ -1,85 +1,178 @@
-// PluginVersions
-// List versions of all loaded plugins, sorted alphabetically.
-//		This is a combinaion of /plugins and /version plugin for each member of the list.
-// Reload the config.yml file. If config.yml does not exist, copy it from the jar.
-// FUTURE? Report available updates for loaded plugins.
-// FUTURE? Update specific plugins or all loaded plugins.
-
 package com.straight8.rambeau.bukkit;
 
 import com.straight8.rambeau.bukkit.command.PluginVersionsCommand;
-import dev.ratas.slimedogcore.impl.SlimeDogCore;
+import com.straight8.rambeau.bukkit.data.PluginCatalog;
+import com.straight8.rambeau.bukkit.placeholder.PluginVersionsExpansion;
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Map;
 import java.util.Objects;
-import java.util.logging.Logger;
+import java.util.Set;
+import org.bukkit.command.PluginCommand;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.java.JavaPlugin;
 
-// import org.bukkit.Bukkit;
-// Imports for Metrics
+public final class PluginVersionsBukkit extends JavaPlugin {
+    private static final String DEFAULT_LOCALE_FILE = "translations/Locale_EN.yml";
+    private static final int LANGUAGE_FILE_VERSION = 4;
+    private static final DateTimeFormatter BACKUP_TIMESTAMP = DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss");
+    private static final char LEGACY_COLOR_CHAR = '\u0026';
+    private static final Map<String, String> LEGACY_MESSAGE_KEYS = Map.of(
+            "page-header-format", "list.page-header",
+            "enabled-version-format", "list.enabled-version",
+            "disabled-version-format", "list.disabled-version"
+    );
+    private static final Set<String> LEGACY_CONFIG_KEYS = Set.of(
+            "update-source",
+            "page-header-format",
+            "enabled-version-format",
+            "disabled-version-format"
+    );
 
-public class PluginVersionsBukkit extends SlimeDogCore {
-    public final Logger logger = Logger.getLogger("Minecraft");
-
+    private long enabledAt;
     private Messages messages;
+    private PluginCatalog catalog;
+    private PluginVersionsExpansion placeholderExpansion;
 
-    // Fired when plugin is first enabled
     @Override
-    public void pluginEnabled() {
-        // Enable is logged automatically.
+    public void onEnable() {
+        enabledAt = System.currentTimeMillis();
 
-        // Create config.yml and plugin directory tree, if they do not exist.
-        CreateConfigFileIfMissing();
+        saveDefaultConfig();
+        ensureDefaultLocaleFile();
+        migrateLegacyMessages();
+        reloadPluginVersions();
 
-        // Read the configuration values from config.yml.
-        ReadConfigValuesFromFile();
-        messages = new Messages(getDefaultConfig());
-        Objects.requireNonNull(getCommand("pluginversions")).setExecutor(new PluginVersionsCommand(this));
+        PluginVersionsCommand commandExecutor = new PluginVersionsCommand(this);
+        PluginCommand command = Objects.requireNonNull(getCommand("pv"), "pv command");
+        command.setExecutor(commandExecutor);
+        command.setTabCompleter(commandExecutor);
+        registerPluginVersionsNamespace(command);
+
+        if (getConfig().getBoolean("database.update-on-enable", true)) {
+            catalog.refreshAndSave();
+        }
+        registerPlaceholderExpansion();
+    }
+
+    @Override
+    public void onDisable() {
+        if (placeholderExpansion != null) {
+            placeholderExpansion.unregister();
+            placeholderExpansion = null;
+        }
     }
 
     public Messages getMessages() {
         return messages;
     }
 
-    // Fired when plugin is disabled
-    @Override
-    public void pluginDisabled() {
-        // Disable is logged automatically.
+    public PluginCatalog getCatalog() {
+        return catalog;
     }
 
-    public void CreateConfigFileIfMissing() {
-        try {
-            String pdfFile = this.getPluginMeta().getDescription();
-            if (!getDataFolder().exists()) {
-                this.log(pdfFile + ": folder doesn't exist");
-                this.log(pdfFile + ": creating folder");
-                try {
-                    //noinspection ResultOfMethodCallIgnored
-                    getDataFolder().mkdirs();
-                } catch (Exception e) {
-                    this.log(pdfFile + ": could not create folder");
-                    return;
-                }
-                this.log(pdfFile + ": folder created at " + getDataFolder());
-            }
-            File configFile = new File(getDataFolder(), "config.yml");
-            if (!configFile.exists()) {
-                this.log(pdfFile + ": config.yml not found, creating!");
-                try {
-                    saveDefaultConfig();
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        } catch (RuntimeException e) {
-            throw new RuntimeException(e);
+    public void reloadPluginVersions() {
+        reloadConfig();
+        upgradeConfig();
+        ensureDefaultLocaleFile();
+        messages = new Messages(this);
+        catalog = new PluginCatalog(this);
+    }
+
+    public Duration getUptime() {
+        return Duration.ofMillis(System.currentTimeMillis() - enabledAt);
+    }
+
+    private void registerPluginVersionsNamespace(PluginCommand command) {
+        if (getServer().getCommandMap().getCommand("pluginversions:pv") == null) {
+            getServer().getCommandMap().register("pluginversions", command);
         }
     }
 
-    public void ReadConfigValuesFromFile() {
-        this.reloadConfig();
-        if (messages != null) messages.reload();
+    private void registerPlaceholderExpansion() {
+        if (!getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+            return;
+        }
+
+        placeholderExpansion = new PluginVersionsExpansion(this);
+        if (placeholderExpansion.register()) {
+            getLogger().info("Registered PlaceholderAPI expansion.");
+        }
     }
 
-    public void log(String logString) {
-        this.logger.info("[" + this.getName() + "] " + logString);
+    private void ensureDefaultLocaleFile() {
+        File localeFile = new File(getDataFolder(), DEFAULT_LOCALE_FILE);
+        if (!localeFile.exists()) {
+            saveResource(DEFAULT_LOCALE_FILE, false);
+            return;
+        }
+
+        YamlConfiguration locale = YamlConfiguration.loadConfiguration(localeFile);
+        if (locale.getInt("language-file-version", 0) >= LANGUAGE_FILE_VERSION) {
+            return;
+        }
+
+        File backupFile = new File(localeFile.getParentFile(),
+                localeFile.getName() + ".bak-" + BACKUP_TIMESTAMP.format(LocalDateTime.now()));
+        try {
+            Files.copy(localeFile.toPath(), backupFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            saveResource(DEFAULT_LOCALE_FILE, true);
+            getLogger().info("Updated default English language file. Previous copy backed up to " + backupFile.getName() + ".");
+        } catch (IOException e) {
+            getLogger().warning("Could not update default English language file: " + e.getMessage());
+        }
+    }
+
+    private void migrateLegacyMessages() {
+        File localeFile = new File(getDataFolder(), DEFAULT_LOCALE_FILE);
+        YamlConfiguration locale = YamlConfiguration.loadConfiguration(localeFile);
+        boolean changed = false;
+
+        for (Map.Entry<String, String> entry : LEGACY_MESSAGE_KEYS.entrySet()) {
+            String legacyValue = getConfig().getString(entry.getKey());
+            if (legacyValue != null && !isLegacyDefaultMessage(entry.getKey(), legacyValue)) {
+                locale.set(entry.getValue(), Messages.legacyToMiniMessage(legacyValue));
+                changed = true;
+            }
+        }
+
+        if (changed) {
+            try {
+                locale.save(localeFile);
+                getLogger().info("Migrated legacy message formats to " + DEFAULT_LOCALE_FILE + ".");
+            } catch (IOException e) {
+                getLogger().warning("Could not save migrated language messages: " + e.getMessage());
+            }
+        }
+    }
+
+    private boolean isLegacyDefaultMessage(String key, String value) {
+        return switch (key) {
+            case "page-header-format" -> "PluginVersions ===== page {page} =====".equals(value);
+            case "enabled-version-format" -> (" - " + LEGACY_COLOR_CHAR + "a{name}{spacing}" + LEGACY_COLOR_CHAR + "e{version}").equals(value);
+            case "disabled-version-format" -> (" - " + LEGACY_COLOR_CHAR + "c{name}{spacing}" + LEGACY_COLOR_CHAR + "e{version}").equals(value);
+            default -> false;
+        };
+    }
+
+    private void upgradeConfig() {
+        getConfig().options().copyDefaults(true);
+
+        boolean changed = false;
+        for (String key : LEGACY_CONFIG_KEYS) {
+            if (getConfig().isSet(key)) {
+                getConfig().set(key, null);
+                changed = true;
+            }
+        }
+
+        if (changed || !new File(getDataFolder(), "config.yml").exists()) {
+            saveConfig();
+        }
     }
 }

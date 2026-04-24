@@ -2,35 +2,67 @@
 #
 # See http://wiki.bukkit.org/Plugin_YAML for a complete list of requirements and options.
 
-name: PluginVersions
-version: ${project.version}
+name: 1MB-PluginVersions
+version: ${version}
 api-version: 1.21.11
 main: com.straight8.rambeau.bukkit.PluginVersionsBukkit
-description: List installed plugins and versions alphabetically
-authors: [ mart-r, GabrielHD150, SlimeDog ]
+description: ${description}
+authors: [mart-r, GabrielHD150, SlimeDog, mrfloris]
+contributors: [OpenAI]
+provides: [PluginVersions]
+softdepend: [PlaceholderAPI]
 
 commands:
-  pluginversions:
+  pv:
     description: Commands for PluginVersions
-    usage: <command> list | <command> reload
-    aliases: [ pv ]
-  pluginversions list:
-    description: List loaded plugins and versions
-    usage: <command> [page]
-  pluginversions reload:
-    description: Reload configuration file
-    usage: <command>
+    usage: /<command> help | list | reload | debug | config | set | export
 
 permissions:
   pluginversions.*:
     description: Allows access to all PluginVersions commands
     children:
+      pluginversions.help: true
       pluginversions.list: true
       pluginversions.reload: true
+      pluginversions.debug: true
+      pluginversions.config: true
+      pluginversions.set: true
+      pluginversions.export: true
+      pluginversions.url.*: true
+  pluginversions.url.*:
+    description: Allows access to all PluginVersions URL database actions
+    default: op
+    children:
+      pluginversions.url.list: true
+      pluginversions.url.add: true
+      pluginversions.url.del: true
+  pluginversions.help:
+    description: Allows you to view PluginVersions help pages
+    default: true
   pluginversions.list:
-    description: Allows you to retrieve PluginVersions listing
+    description: Allows you to list loaded plugins and versions
     default: op
   pluginversions.reload:
-    description: Allows you to reload PluginVersions configuration
+    description: Allows you to reload PluginVersions configuration and translations
     default: op
-    
+  pluginversions.debug:
+    description: Allows you to view PluginVersions debug pages
+    default: op
+  pluginversions.config:
+    description: Allows you to view PluginVersions configuration values
+    default: op
+  pluginversions.set:
+    description: Allows you to change PluginVersions configuration values
+    default: op
+  pluginversions.export:
+    description: Allows you to export plugin inventory reports
+    default: op
+  pluginversions.url.list:
+    description: Allows you to list and audit stored plugin URLs
+    default: op
+  pluginversions.url.add:
+    description: Allows you to add stored plugin URLs
+    default: op
+  pluginversions.url.del:
+    description: Allows you to remove stored plugin URLs
+    default: op

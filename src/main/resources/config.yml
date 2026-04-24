@@ -1,20 +1,44 @@
 # PluginVersions configuration
-# Both legacy and MiniMessage format codes are supported.
-# See https://github.com/SlimeDog/SlimeDogCore/wiki/Formatting-Codes.
 #
-# To regenerate the default file content, delete the file and run:
-#		/pv reload
-#
+# Language phrases are stored in translations/Locale_EN.yml. Keep command text,
+# colors, placeholders, and other player-facing wording there so translations
+# stay separate from operational settings.
 
-# By default, the plugin collects and transmits anonymous statistics to bstats.org.
-# Data collection may be disabled here, or generally in the bStats/config.yml.
-#
-enable-metrics: true
+# Check for updates.
+# Disabled by default so no update checks run unless you opt in.
+check-for-updates: false
 
-# When executed at the console,
-# {spacing} will enable tabular output (in-game does not support tabular output).
-# To disable tabular output at the console, replace "{spacing}" with " " in the format strings.
-#
-page-header-format: "PluginVersions ===== page {page} ====="
-enabled-version-format: " - &a{name}{spacing}&e{version}"
-disabled-version-format: " - &c{name}{spacing}&e{version}"
+settings:
+  # Anonymous bStats metrics are disabled by default.
+  # Set this to true only when you explicitly want PluginVersions to report
+  # anonymous usage statistics. Global bStats settings may still override this.
+  enable-metrics: false
+
+  # Locale file suffix loaded from the translations folder.
+  # Example: EN loads translations/Locale_EN.yml.
+  locale: "EN"
+
+  # Number of rows shown on paged command output, including /pv list <page>,
+  # /pv config <page>, /pv help <page>, and /pv debug <page>.
+  lines-per-page: 10
+
+database:
+  # YAML database file used to build a long-lived plugin inventory.
+  # Relative paths are stored inside plugins/1MB-PluginVersions/.
+  file: "plugins-database.yml"
+
+  # Scan loaded plugins and update the database when PluginVersions starts.
+  update-on-enable: true
+
+  # Scan loaded plugins and update the database whenever /pv list is used.
+  update-on-list: true
+
+  # Maximum number of scan history entries retained per tracked plugin.
+  max-history-per-plugin: 25
+
+exports:
+  # Folder for timestamped Markdown and Discord-friendly exports created by
+  # /pv export markdown and /pv export discord. Each export also updates a
+  # stable latest file for easy GitHub or Discord automation.
+  # Relative paths are stored inside plugins/1MB-PluginVersions/.
+  directory: "exports"
