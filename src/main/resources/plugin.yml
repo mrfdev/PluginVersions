@@ -4,7 +4,7 @@
 
 name: 1MB-PluginVersions
 version: ${version}
-api-version: 1.21.11
+api-version: ${apiVersion}
 main: com.straight8.rambeau.bukkit.PluginVersionsBukkit
 description: ${description}
 authors: [mart-r, GabrielHD150, SlimeDog, mrfloris]

@@ -3,6 +3,7 @@ package com.straight8.rambeau.bukkit;
 import com.straight8.rambeau.bukkit.command.PluginVersionsCommand;
 import com.straight8.rambeau.bukkit.data.PluginCatalog;
 import com.straight8.rambeau.bukkit.placeholder.PluginVersionsExpansion;
+import com.straight8.rambeau.util.YamlFiles;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -112,7 +113,7 @@ public final class PluginVersionsBukkit extends JavaPlugin {
             return;
         }
 
-        YamlConfiguration locale = YamlConfiguration.loadConfiguration(localeFile);
+        YamlConfiguration locale = YamlFiles.load(localeFile, getLogger());
         if (locale.getInt("language-file-version", 0) >= LANGUAGE_FILE_VERSION) {
             return;
         }
@@ -130,7 +131,7 @@ public final class PluginVersionsBukkit extends JavaPlugin {
 
     private void migrateLegacyMessages() {
         File localeFile = new File(getDataFolder(), DEFAULT_LOCALE_FILE);
-        YamlConfiguration locale = YamlConfiguration.loadConfiguration(localeFile);
+        YamlConfiguration locale = YamlFiles.load(localeFile, getLogger());
         boolean changed = false;
 
         for (Map.Entry<String, String> entry : LEGACY_MESSAGE_KEYS.entrySet()) {

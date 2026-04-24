@@ -13,9 +13,10 @@
         <maven.compiler.release>25</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <paper.api.version>26.1.2.build.20-alpha</paper.api.version>
+        <plugin.api.version>1.21.11</plugin.api.version>
         <adventure.version>4.26.1</adventure.version>
         <placeholderapi.version>2.12.2</placeholderapi.version>
-        <build.number>003</build.number>
+        <build.number>005</build.number>
     </properties>
 
     <repositories>

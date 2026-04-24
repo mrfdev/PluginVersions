@@ -1,11 +1,13 @@
 package com.straight8.rambeau.bukkit;
 
+import com.straight8.rambeau.util.YamlFiles;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
+import java.util.logging.Logger;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.command.CommandSender;
@@ -17,6 +19,7 @@ public final class Messages {
     private static final LegacyComponentSerializer LEGACY_AMPERSAND = LegacyComponentSerializer.legacyAmpersand();
 
     private final File localeFile;
+    private final Logger logger;
     private YamlConfiguration locale;
 
     public Messages(PluginVersionsBukkit plugin) {
@@ -30,11 +33,12 @@ public final class Messages {
         if (!localeFile.exists() && "Locale_EN.yml".equals(localeFile.getName())) {
             plugin.saveResource("translations/Locale_EN.yml", false);
         }
+        logger = plugin.getLogger();
         reload();
     }
 
     public void reload() {
-        locale = YamlConfiguration.loadConfiguration(localeFile);
+        locale = YamlFiles.load(localeFile, logger);
     }
 
     public String raw(String path) {

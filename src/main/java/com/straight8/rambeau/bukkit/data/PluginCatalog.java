@@ -2,6 +2,7 @@ package com.straight8.rambeau.bukkit.data;
 
 import com.straight8.rambeau.bukkit.PluginComparator;
 import com.straight8.rambeau.bukkit.PluginVersionsBukkit;
+import com.straight8.rambeau.util.YamlFiles;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
@@ -43,7 +44,7 @@ public final class PluginCatalog {
     public CatalogSummary refreshAndSave() {
         Plugin[] plugins = sortedPlugins();
         File databaseFile = databaseFile();
-        YamlConfiguration database = YamlConfiguration.loadConfiguration(databaseFile);
+        YamlConfiguration database = loadDatabase(databaseFile);
         String now = timestamp();
 
         database.set("metadata.last-scan", now);
@@ -97,7 +98,7 @@ public final class PluginCatalog {
     }
 
     public int getTrackedPluginCount() {
-        YamlConfiguration database = YamlConfiguration.loadConfiguration(databaseFile());
+        YamlConfiguration database = loadDatabase();
         return database.getConfigurationSection("plugins") == null
                 ? 0
                 : database.getConfigurationSection("plugins").getKeys(false).size();
@@ -110,6 +111,14 @@ public final class PluginCatalog {
             return file;
         }
         return new File(owner.getDataFolder(), configured);
+    }
+
+    private YamlConfiguration loadDatabase() {
+        return loadDatabase(databaseFile());
+    }
+
+    private YamlConfiguration loadDatabase(File databaseFile) {
+        return YamlFiles.load(databaseFile, owner.getLogger());
     }
 
     public File exportDirectory() {
@@ -140,7 +149,7 @@ public final class PluginCatalog {
         builder.append("- Plugins: ").append(summary.total()).append(" total, ")
                 .append(summary.enabled()).append(" enabled, ")
                 .append(summary.disabled()).append(" disabled\n\n");
-        YamlConfiguration database = YamlConfiguration.loadConfiguration(databaseFile());
+        YamlConfiguration database = loadDatabase();
         builder.append("| Plugin | Version | Status | Links | Description |\n");
         builder.append("| --- | --- | --- | --- | --- |\n");
 
@@ -174,7 +183,7 @@ public final class PluginCatalog {
                 .append(summary.enabled()).append(" enabled, ")
                 .append(summary.disabled()).append(" disabled\n\n");
 
-        YamlConfiguration database = YamlConfiguration.loadConfiguration(databaseFile());
+        YamlConfiguration database = loadDatabase();
         for (Plugin plugin : sortedPlugins()) {
             String links = markdownLinks(combinedUrls(database, databaseKey(plugin.getPluginMeta().getName())));
             builder.append("- **")
@@ -324,7 +333,7 @@ public final class PluginCatalog {
 
     public List<UrlAuditEntry> urlAudit() {
         refreshAndSave();
-        YamlConfiguration database = YamlConfiguration.loadConfiguration(databaseFile());
+        YamlConfiguration database = loadDatabase();
         List<UrlAuditEntry> entries = new ArrayList<>();
         if (database.getConfigurationSection("plugins") == null) {
             return entries;
@@ -360,7 +369,7 @@ public final class PluginCatalog {
             return "";
         }
 
-        YamlConfiguration database = YamlConfiguration.loadConfiguration(databaseFile());
+        YamlConfiguration database = loadDatabase();
         String pluginPath = resolvePluginPath(database, pluginName);
         if (pluginPath == null) {
             return "";
@@ -371,7 +380,7 @@ public final class PluginCatalog {
     }
 
     public List<String> trackedPluginNames() {
-        YamlConfiguration database = YamlConfiguration.loadConfiguration(databaseFile());
+        YamlConfiguration database = loadDatabase();
         List<String> names = new ArrayList<>();
         if (database.getConfigurationSection("plugins") != null) {
             for (String key : database.getConfigurationSection("plugins").getKeys(false)) {
@@ -515,7 +524,7 @@ public final class PluginCatalog {
 
     private YamlConfiguration loadDatabaseWithPlugin(String pluginName) {
         refreshAndSave();
-        return YamlConfiguration.loadConfiguration(databaseFile());
+        return loadDatabase();
     }
 
     private String resolvePluginPath(YamlConfiguration database, String pluginName) {

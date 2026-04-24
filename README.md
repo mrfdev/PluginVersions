@@ -4,7 +4,7 @@ PluginVersions creates an alphabetically sorted list of loaded plugins and their
 
 ## Tested Environment
 
-This Paper build targets PaperMC `26.1.2` (`paper-api:26.1.2.build.20-alpha`) and compiles with Java 25. The plugin uses `api-version: 1.21.11` and reports version `2.0.0`.
+This Paper build compiles against PaperMC `26.1.2` (`paper-api:26.1.2.build.20-alpha`) with Java 25. The generated `plugin.yml` declares `api-version: 1.21.11` so the same jar can load on Paper 1.21.11 and Paper 26.1.2. The plugin reports version `2.0.0`.
 
 The plugin data folder is `plugins/1MB-PluginVersions/`.
 
@@ -18,7 +18,22 @@ All commands can be executed from the console. In-game use requires the matching
 gradle clean build
 ```
 
-The compiled jar is written to `builds/libs/1MB-PluginVersions-v2.0.0-003-j25-26.1.2.jar`.
+The compiled jar is written to `libs/1MB-PluginVersions-v2.0.0-005-j25-26.1.2.jar`.
+
+Build metadata can be printed with:
+
+```bash
+gradle printBuildConfig
+```
+
+## Test Server
+
+Use the centralized Paper test-server runner from the Codex servers workspace. Do not use this repository's local `/servers/` folder for new tests.
+
+```bash
+/Users/floris/Projects/Codex/servers/run-test-server --paper 1.21.11 --plugin libs/1MB-PluginVersions-v2.0.0-005-j25-26.1.2.jar --foreground
+/Users/floris/Projects/Codex/servers/run-test-server --paper 26.1.2 --plugin libs/1MB-PluginVersions-v2.0.0-005-j25-26.1.2.jar --foreground
+```
 
 ## Commands
 
