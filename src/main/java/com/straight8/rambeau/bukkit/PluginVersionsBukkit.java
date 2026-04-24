@@ -19,7 +19,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public final class PluginVersionsBukkit extends JavaPlugin {
     private static final String DEFAULT_LOCALE_FILE = "translations/Locale_EN.yml";
-    private static final int LANGUAGE_FILE_VERSION = 4;
+    private static final int LANGUAGE_FILE_VERSION = 5;
     private static final DateTimeFormatter BACKUP_TIMESTAMP = DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss");
     private static final char LEGACY_COLOR_CHAR = '\u0026';
     private static final Map<String, String> LEGACY_MESSAGE_KEYS = Map.of(

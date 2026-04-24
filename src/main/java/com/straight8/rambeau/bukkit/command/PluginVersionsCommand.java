@@ -106,8 +106,7 @@ public final class PluginVersionsCommand implements CommandExecutor, TabComplete
         if (!hasPermission(sender, "help")) {
             return true;
         }
-        sendStaticPage(sender, "help", HELP_TOPICS, args.length == 0 ? "overview" : args[0], helpTokens());
-        return true;
+        return sendStaticPage(sender, "help", HELP_TOPICS, args.length == 0 ? "overview" : args[0], helpTokens());
     }
 
     private boolean runList(CommandSender sender, String[] args) {
@@ -125,19 +124,22 @@ public final class PluginVersionsCommand implements CommandExecutor, TabComplete
             return true;
         }
 
-        int page = args.length == 0 ? 0 : parsePositiveInt(args[0], 1);
         int linesPerPage = linesPerPage();
         int totalPages = CommandPageUtils.getTotalPages(plugins.length, linesPerPage);
+        int page = args.length == 0 ? 0 : parsePage(sender, args[0], totalPages);
+        if (page < 0) {
+            return true;
+        }
         List<Plugin> displayPlugins = page == 0
                 ? Arrays.asList(plugins)
-                : CommandPageUtils.getPage(Arrays.asList(plugins), Math.min(page, totalPages), linesPerPage);
+                : CommandPageUtils.getPage(Arrays.asList(plugins), page, linesPerPage);
 
         Messages messages = plugin.getMessages();
         messages.sendRaw(sender, messages.raw(page == 0 ? "list.header" : "list.page-header"),
                 Messages.token("count", plugins.length),
                 Messages.token("enabled", countEnabled(plugins)),
                 Messages.token("disabled", plugins.length - countEnabled(plugins)),
-                Messages.token("page", page == 0 ? 1 : Math.min(page, totalPages)),
+                Messages.token("page", page == 0 ? 1 : page),
                 Messages.token("pages", totalPages));
 
         int maxSpacing = CommandPageUtils.getMaxNameLength(Plugin::getName, displayPlugins);
@@ -175,8 +177,7 @@ public final class PluginVersionsCommand implements CommandExecutor, TabComplete
             return true;
         }
         String requested = args.length == 0 ? "status" : args[0];
-        sendStaticPage(sender, "debug", DEBUG_TOPICS, requested, debugTokens());
-        return true;
+        return sendStaticPage(sender, "debug", DEBUG_TOPICS, requested, debugTokens());
     }
 
     private boolean runConfig(CommandSender sender, String[] args) {
@@ -187,7 +188,10 @@ public final class PluginVersionsCommand implements CommandExecutor, TabComplete
         List<String> leaves = configLeaves();
         int linesPerPage = linesPerPage();
         int totalPages = CommandPageUtils.getTotalPages(leaves.size(), linesPerPage);
-        int page = Math.min(parsePositiveInt(args.length == 0 ? "1" : args[0], 1), totalPages);
+        int page = parsePage(sender, args.length == 0 ? "1" : args[0], totalPages);
+        if (page < 0) {
+            return true;
+        }
 
         Messages messages = plugin.getMessages();
         messages.sendRaw(sender, messages.raw("config.header"),
@@ -310,7 +314,10 @@ public final class PluginVersionsCommand implements CommandExecutor, TabComplete
             }
 
             int totalPages = CommandPageUtils.getTotalPages(entries.size(), linesPerPage());
-            int page = Math.min(parsePositiveInt(args.length >= 2 ? args[1] : "1", 1), totalPages);
+            int page = parsePage(sender, args.length >= 2 ? args[1] : "1", totalPages);
+            if (page < 0) {
+                return true;
+            }
             plugin.getMessages().sendRaw(sender, plugin.getMessages().raw("url.audit-header"),
                     Messages.token("page", page),
                     Messages.token("pages", totalPages),
@@ -371,8 +378,12 @@ public final class PluginVersionsCommand implements CommandExecutor, TabComplete
         return true;
     }
 
-    private void sendStaticPage(CommandSender sender, String root, List<String> topics, String requested, Messages.Token[] tokens) {
+    private boolean sendStaticPage(CommandSender sender, String root, List<String> topics, String requested, Messages.Token[] tokens) {
         int pageIndex = pageIndex(topics, requested);
+        if (pageIndex < 0) {
+            sendNoSuchPage(sender, requested, topics.size());
+            return true;
+        }
         String topic = topics.get(pageIndex);
         Messages messages = plugin.getMessages();
         List<Messages.Token> mergedTokens = new ArrayList<>(Arrays.asList(tokens));
@@ -384,6 +395,7 @@ public final class PluginVersionsCommand implements CommandExecutor, TabComplete
         Messages.Token[] tokenArray = mergedTokens.toArray(Messages.Token[]::new);
         messages.sendRaw(sender, messages.raw(root + ".header"), tokenArray);
         messages.sendList(sender, root + ".pages." + topic + ".lines", tokens);
+        return true;
     }
 
     private Messages.Token[] helpTokens() {
@@ -546,8 +558,8 @@ public final class PluginVersionsCommand implements CommandExecutor, TabComplete
 
     private int pageIndex(List<String> topics, String requested) {
         if (CommandPageUtils.isInteger(requested)) {
-            int page = Math.max(1, Integer.parseInt(requested));
-            return Math.min(page, topics.size()) - 1;
+            int page = Integer.parseInt(requested);
+            return isPageInRange(page, topics.size()) ? page - 1 : -1;
         }
 
         int index = topics.indexOf(requested.toLowerCase(Locale.ROOT));
@@ -558,11 +570,28 @@ public final class PluginVersionsCommand implements CommandExecutor, TabComplete
         return Math.max(1, plugin.getConfig().getInt("settings.lines-per-page", 10));
     }
 
-    private int parsePositiveInt(String value, int fallback) {
+    private int parsePage(CommandSender sender, String value, int totalPages) {
         if (!CommandPageUtils.isInteger(value)) {
-            return fallback;
+            sendNoSuchPage(sender, value, totalPages);
+            return -1;
         }
-        return Math.max(1, Integer.parseInt(value));
+
+        int page = Integer.parseInt(value);
+        if (!isPageInRange(page, totalPages)) {
+            sendNoSuchPage(sender, value, totalPages);
+            return -1;
+        }
+        return page;
+    }
+
+    private boolean isPageInRange(int page, int totalPages) {
+        return page >= 1 && page <= totalPages;
+    }
+
+    private void sendNoSuchPage(CommandSender sender, String requestedPage, int totalPages) {
+        plugin.getMessages().send(sender, "errors.no-such-page",
+                Messages.token("page", requestedPage),
+                Messages.token("pages", totalPages));
     }
 
     private int countEnabled(Plugin[] plugins) {

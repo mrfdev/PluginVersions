@@ -37,6 +37,8 @@ The compiled jar is written to `builds/libs/1MB-PluginVersions-v2.0.0-003-j25-26
 | `/pv set <path> <value>` | Updates a known `config.yml` setting, saves it, and reloads the plugin settings. Filesystem paths are console-only. |
 | `/pv export [markdown\|discord]` | Updates the database and writes timestamped plus stable latest export files. |
 
+Paged commands return `No such page` when the requested number is outside the available range.
+
 ## Permissions
 
 All permissions except `pluginversions.help` default to op.

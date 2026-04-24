@@ -2,12 +2,13 @@
 # MiniMessage formatting is supported. Legacy ampersand color codes are migrated
 # at runtime if an older value is found, but new phrases should use MiniMessage.
 
-language-file-version: 4
+language-file-version: 5
 prefix: "<#b8e0d2>PluginVersions</#b8e0d2><#f4f1de> | </#f4f1de>"
 
 errors:
   no-permission: "<#f28482>You need <#f6bd60>{permission}</#f6bd60> to do that."
   unknown-command: "<#f28482>Unknown command <#f6bd60>{command}</#f6bd60>."
+  no-such-page: "<#f28482>No such page:</#f28482> <#f6bd60>{page}</#f6bd60><#f28482>. Available pages: 1-{pages}.</#f28482>"
 
 list:
   empty: "<#f28482>No plugins are loaded."
@@ -60,6 +61,7 @@ help:
         - "<#f4f1de>Use <#f6bd60>/{alias} list</#f6bd60> to list plugins and <#f6bd60>/{alias} help commands</#f6bd60> to see every command.</#f4f1de>"
         - "<#f4f1de>Console commands are supported. In-game use requires the matching permission.</#f4f1de>"
         - "<#f4f1de>Inventory scans update the YAML database and <#f6bd60>/{alias} export</#f6bd60> writes timestamped and latest Markdown reports.</#f4f1de>"
+        - "<#f4f1de>Paged commands report <#f6bd60>no such page</#f6bd60> when a requested page is outside the available range.</#f4f1de>"
     commands:
       title: "Commands"
       lines:
@@ -151,6 +153,7 @@ debug:
         - "<#f6bd60>/{alias} debug url add|del [plugin] [type] [url]</#f6bd60><#f4f1de> manages manual plugin URLs.</#f4f1de>"
         - "<#f6bd60>/{alias} debug url audit [page]</#f6bd60><#f4f1de> checks URL coverage for tracked plugins.</#f4f1de>"
         - "<#f6bd60>/{alias} export markdown</#f6bd60><#f4f1de> and <#f6bd60>/{alias} export discord</#f6bd60> write timestamped and latest reports.</#f4f1de>"
+        - "<#f4f1de>Out-of-range numeric pages return <#f6bd60>no such page</#f6bd60> instead of repeating the last page.</#f4f1de>"
         - "<#f4f1de>All commands support console execution. In-game command access follows permissions.</#f4f1de>"
     permissions:
       title: "Permissions"
