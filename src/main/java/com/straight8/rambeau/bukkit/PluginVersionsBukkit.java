@@ -1,6 +1,7 @@
 package com.straight8.rambeau.bukkit;
 
 import com.straight8.rambeau.bukkit.command.PluginVersionsCommand;
+import com.straight8.rambeau.bukkit.config.PluginConfig;
 import com.straight8.rambeau.bukkit.data.PluginCatalog;
 import com.straight8.rambeau.bukkit.placeholder.PluginVersionsExpansion;
 import com.straight8.rambeau.util.YamlFiles;
@@ -15,6 +16,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import org.bukkit.command.PluginCommand;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -36,6 +38,7 @@ public final class PluginVersionsBukkit extends JavaPlugin {
     );
 
     private long enabledAt;
+    private PluginConfig pluginConfig;
     private Messages messages;
     private PluginCatalog catalog;
     private PluginVersionsExpansion placeholderExpansion;
@@ -77,6 +80,26 @@ public final class PluginVersionsBukkit extends JavaPlugin {
         return catalog;
     }
 
+    @Override
+    public FileConfiguration getConfig() {
+        return pluginConfig().get();
+    }
+
+    @Override
+    public void reloadConfig() {
+        pluginConfig().reload();
+    }
+
+    @Override
+    public void saveConfig() {
+        pluginConfig().save();
+    }
+
+    @Override
+    public void saveDefaultConfig() {
+        pluginConfig().reload();
+    }
+
     public void reloadPluginVersions() {
         reloadConfig();
         upgradeConfig();
@@ -87,6 +110,13 @@ public final class PluginVersionsBukkit extends JavaPlugin {
 
     public Duration getUptime() {
         return Duration.ofMillis(System.currentTimeMillis() - enabledAt);
+    }
+
+    private PluginConfig pluginConfig() {
+        if (pluginConfig == null) {
+            pluginConfig = new PluginConfig(this);
+        }
+        return pluginConfig;
     }
 
     private void registerPluginVersionsNamespace(PluginCommand command) {
@@ -162,8 +192,6 @@ public final class PluginVersionsBukkit extends JavaPlugin {
     }
 
     private void upgradeConfig() {
-        getConfig().options().copyDefaults(true);
-
         boolean changed = false;
         for (String key : LEGACY_CONFIG_KEYS) {
             if (getConfig().isSet(key)) {

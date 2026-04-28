@@ -1,44 +1,67 @@
 # PluginVersions configuration
 #
-# Language phrases are stored in translations/Locale_EN.yml. Keep command text,
-# colors, placeholders, and other player-facing wording there so translations
-# stay separate from operational settings.
+# Player-facing phrases, colors, command text, and placeholders live in translations/Locale_EN.yml.
+# This file only contains operational settings.
+# Existing values are preserved when the plugin adds missing defaults or refreshes comments.
 
-# Check for updates.
-# Disabled by default so no update checks run unless you opt in.
+# Controls whether PluginVersions may run its own update checks when an updater is available.
+# Default: false.
+# Safe values: true or false. This build does not start an external updater while this is false.
+# Manual config edits take effect after /pv reload or a server restart; /pv set reloads immediately.
 check-for-updates: false
 
+# General runtime settings.
 settings:
-  # Anonymous bStats metrics are disabled by default.
-  # Set this to true only when you explicitly want PluginVersions to report
-  # anonymous usage statistics. Global bStats settings may still override this.
+  # Reserved opt-in switch for anonymous bStats-style metrics if metrics support is added.
+  # Default: false.
+  # Safe values: true or false. Global bStats settings may still override plugin-level metrics.
+  # Manual config edits take effect after /pv reload or a server restart; /pv set reloads immediately.
   enable-metrics: false
 
-  # Locale file suffix loaded from the translations folder.
-  # Example: EN loads translations/Locale_EN.yml.
+  # Translation locale suffix loaded from the translations folder.
+  # Default: EN, which loads translations/Locale_EN.yml.
+  # Expected format: a locale suffix that matches an existing Locale_<suffix>.yml file; missing files fall back to EN.
+  # Manual config edits take effect after /pv reload or a server restart; /pv set reloads immediately.
   locale: "EN"
 
-  # Number of rows shown on paged command output, including /pv list <page>,
-  # /pv config <page>, /pv help <page>, and /pv debug <page>.
+  # Number of rows shown on paged command output such as /pv list <page>, /pv config, /pv help, and /pv debug.
+  # Default: 10.
+  # Safe values: whole numbers of 1 or higher. Values below 1 are treated as 1 at runtime.
+  # Manual config edits take effect after /pv reload or a server restart; /pv set reloads immediately.
   lines-per-page: 10
 
+# Plugin inventory database settings. The database is generated YAML data, not a second config file.
 database:
   # YAML database file used to build a long-lived plugin inventory.
-  # Relative paths are stored inside plugins/1MB-PluginVersions/.
+  # Default: plugins-database.yml.
+  # Expected format: a file path. Relative paths are stored inside plugins/1MB-PluginVersions/; absolute paths are allowed from console/config only.
+  # Manual config edits take effect after /pv reload or a server restart; /pv set reloads immediately and is console-only for this path.
+  # Changing this path does not move or delete the old database file.
   file: "plugins-database.yml"
 
-  # Scan loaded plugins and update the database when PluginVersions starts.
+  # Scans loaded plugins and updates the database when PluginVersions is enabled.
+  # Default: true.
+  # Safe values: true or false.
+  # Manual config edits take effect the next time the plugin is enabled, such as after a server restart or plugin manager reload.
   update-on-enable: true
 
-  # Scan loaded plugins and update the database whenever /pv list is used.
+  # Scans loaded plugins and updates the database whenever /pv list is used.
+  # Default: true.
+  # Safe values: true or false. Disable this if you only want scans from startup, reload, URL audit, or export actions.
+  # Manual config edits take effect after /pv reload or a server restart; /pv set reloads immediately.
   update-on-list: true
 
   # Maximum number of scan history entries retained per tracked plugin.
+  # Default: 25.
+  # Safe values: whole numbers of 1 or higher. Values below 1 are treated as 1 at runtime.
+  # Applies during the next database scan; /pv set reloads immediately, then later scans use the new limit.
   max-history-per-plugin: 25
 
+# Markdown and Discord-friendly export settings.
 exports:
-  # Folder for timestamped Markdown and Discord-friendly exports created by
-  # /pv export markdown and /pv export discord. Each export also updates a
-  # stable latest file for easy GitHub or Discord automation.
-  # Relative paths are stored inside plugins/1MB-PluginVersions/.
+  # Folder for timestamped export files created by /pv export markdown and /pv export discord.
+  # Default: exports.
+  # Expected format: a directory path. Relative paths are stored inside plugins/1MB-PluginVersions/; absolute paths are allowed from console/config only.
+  # Manual config edits take effect after /pv reload or a server restart; /pv set reloads immediately and is console-only for this path.
+  # Changing this path does not move or delete older export files.
   directory: "exports"

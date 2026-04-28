@@ -18,7 +18,7 @@ All commands can be executed from the console. In-game use requires the matching
 gradle clean build
 ```
 
-The compiled jar is written to `libs/1MB-PluginVersions-v2.0.0-005-j25-26.1.2.jar`.
+The compiled jar is written to `libs/1MB-PluginVersions-v2.0.0-006-j25-26.1.2.jar`.
 
 Build metadata can be printed with:
 
@@ -31,8 +31,8 @@ gradle printBuildConfig
 Use the centralized Paper test-server runner from the Codex servers workspace. Do not use this repository's local `/servers/` folder for new tests.
 
 ```bash
-/Users/floris/Projects/Codex/servers/run-test-server --paper 1.21.11 --plugin libs/1MB-PluginVersions-v2.0.0-005-j25-26.1.2.jar --foreground
-/Users/floris/Projects/Codex/servers/run-test-server --paper 26.1.2 --plugin libs/1MB-PluginVersions-v2.0.0-005-j25-26.1.2.jar --foreground
+/Users/floris/Projects/Codex/servers/run-test-server --paper 1.21.11 --plugin libs/1MB-PluginVersions-v2.0.0-006-j25-26.1.2.jar --foreground
+/Users/floris/Projects/Codex/servers/run-test-server --paper 26.1.2 --plugin libs/1MB-PluginVersions-v2.0.0-006-j25-26.1.2.jar --foreground
 ```
 
 ## Commands
@@ -94,6 +94,8 @@ If PlaceholderAPI is installed, PluginVersions registers these placeholders:
 
 `config.yml` contains only operational settings and is fully commented. Player-facing phrases, command text, colors, and placeholders are kept in `translations/Locale_EN.yml`.
 
+PluginVersions loads and saves `config.yml` with Bukkit's comment-aware YAML API. Existing admin-edited values are preserved, missing defaults are added safely, and comments survive first creation, `/pv reload`, server restarts, and `/pv set` edits.
+
 Anonymous metrics are disabled by default with `settings.enable-metrics: false`.
 
 Update checks are disabled by default with `check-for-updates: false`.
@@ -101,6 +103,8 @@ Update checks are disabled by default with `check-for-updates: false`.
 The YAML database is stored at `plugins/1MB-PluginVersions/plugins-database.yml` by default. It tracks each plugin's display name, internal name, version, enabled state, description, authors, contributors, dependencies, provided plugins, website, detected URLs, manual URLs, and scan history.
 
 `database.file` and `exports.directory` are filesystem paths and can only be changed from the console or by editing `config.yml`.
+
+Config file I/O runs synchronously during plugin enable, `/pv reload`, and `/pv set`. That work is intentionally limited to the small `config.yml` file; generated database and export writes only happen during scan/export commands.
 
 ## URL Database
 

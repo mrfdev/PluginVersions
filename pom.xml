@@ -16,7 +16,7 @@
         <plugin.api.version>1.21.11</plugin.api.version>
         <adventure.version>4.26.1</adventure.version>
         <placeholderapi.version>2.12.2</placeholderapi.version>
-        <build.number>005</build.number>
+        <build.number>006</build.number>
     </properties>
 
     <repositories>

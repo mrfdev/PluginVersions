@@ -6,7 +6,7 @@ group = "com.straight8.rambeau"
 version = "2.0.0"
 description = "List installed plugins and versions alphabetically"
 
-val buildNumber = "005"
+val buildNumber = "006"
 val javaTarget = "25"
 val paperTarget = "26.1.2"
 val paperApiVersion = "26.1.2.build.20-alpha"

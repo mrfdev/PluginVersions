@@ -13,7 +13,16 @@ public final class YamlFiles {
     }
 
     public static YamlConfiguration load(File file, Logger logger) {
+        return load(file, logger, false);
+    }
+
+    public static YamlConfiguration loadWithComments(File file, Logger logger) {
+        return load(file, logger, true);
+    }
+
+    public static YamlConfiguration load(File file, Logger logger, boolean parseComments) {
         YamlConfiguration configuration = new YamlConfiguration();
+        configuration.options().parseComments(parseComments);
         if (!file.exists()) {
             return configuration;
         }
