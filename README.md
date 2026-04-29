@@ -1,3 +1,10 @@
+# Deprecated: Moved To 1MB-CMIAPI
+
+> This standalone PluginVersions project is deprecated. Development has moved into [1MB-CMIAPI](https://github.com/mrfdev/1MB-CMIAPI).
+> This repository may remain available in case we ever need to roll back to a standalone plugin, but new work should happen in 1MB-CMIAPI.
+
+---
+
 # PluginVersions &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <a href="https://hangar.papermc.io/SlimeDog/PluginVersions">![download-on-hangar](https://user-images.githubusercontent.com/17748923/187102194-00e910e6-ee8e-42cb-bfe1-d2f9e657ef4b.png)</a> <a href="https://www.spigotmc.org/resources/70927/">![download-on-spigot](https://user-images.githubusercontent.com/17748923/187102011-b72e0f1d-ba74-4cb2-a69e-46f48cb364b5.png)</a>
 
 PluginVersions creates an alphabetically sorted list of loaded plugins and their versions. This 1MB update also keeps a human-readable plugin inventory database, lets you curate plugin URLs over time, and exports Markdown reports for GitHub, Discord, or server documentation.
